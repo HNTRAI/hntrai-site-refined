@@ -166,3 +166,20 @@ body {
 .founder-text {
   flex: 1;
 }
+
+/* Footer / Disclosures */
+.site-footer {
+  background-color: #333;
+  color: #ddd;
+  font-size: 0.8rem;
+  padding: 40px 20px;
+}
+
+.site-footer a {
+  color: #1f6feb;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
