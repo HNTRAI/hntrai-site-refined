@@ -15,14 +15,14 @@ body {
   padding: 40px 0;
 }
 
-/* Logo to take full width */
+/* Logo taking full width */
 .logo {
   display: block;
   width: 100%;
   height: auto;
 }
 
-/* Hero Section with subtle gradient */
+/* Hero Section with a subtle gradient background */
 .hero {
   background: linear-gradient(135deg, #0d1b2a, #1a2b3c);
   color: white;
@@ -40,7 +40,20 @@ body {
   margin-bottom: 30px;
 }
 
-/* CTA Button with smooth transition */
+/* Patent note styling */
+.patent-note {
+  font-size: 1rem;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.patent-note-inline {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #ccc;
+}
+
+/* CTA Button with smooth transitions */
 .cta-button {
   background-color: #1f6feb;
   color: white;
@@ -67,10 +80,18 @@ body {
   margin-bottom: 40px;
 }
 
+/* Feature grid with a 2x2 layout */
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 30px;
+}
+
+/* Responsive: 1 column for smaller screens */
+@media (max-width: 600px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .feature {
