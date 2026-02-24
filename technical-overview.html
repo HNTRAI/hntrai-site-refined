@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HNTR AI — Technical Platform Overview</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0c1d27;--slate:#2f495a;--silver:#6d7d8d;--ice:#c8d3dc;--surface:#fff;--surface-dim:#f4f6f8;--border:#dfe4ea;--border-light:#edf0f4;--accent:#3b82f6;--accent-green:#16a34a;--accent-amber:#d97706;--accent-red:#dc2626;--accent-purple:#7c3aed;--accent-cyan:#0891b2;--font-display:'DM Serif Display',Georgia,serif;--font-body:'DM Sans',system-ui,sans-serif;--font-mono:'JetBrains Mono',monospace}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);color:var(--navy);background:var(--surface);line-height:1.7;-webkit-font-smoothing:antialiased}
+
+/* Print button */
+.print-bar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border-light);padding:12px 32px;display:flex;align-items:center;justify-content:space-between}
+.print-bar-brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:14px;color:var(--navy)}
+.print-bar-brand img{height:32px;width:auto}
+.print-bar-actions{display:flex;gap:12px;align-items:center}
+.print-btn{background:var(--navy);color:#fff;border:none;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .2s}
+.print-btn:hover{background:var(--slate);transform:translateY(-1px)}
+.print-btn-outline{background:transparent;color:var(--navy);border:1.5px solid var(--border);padding:8px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-body);text-decoration:none;transition:all .2s}
+.print-btn-outline:hover{border-color:var(--slate);background:var(--surface-dim)}
+
+/* Document */
+.doc{max-width:900px;margin:0 auto;padding:80px 48px 60px}
+
+/* Cover */
+.cover{text-align:center;padding:80px 0 60px;border-bottom:2px solid var(--navy);margin-bottom:60px}
+.cover img{height:64px;width:auto;margin-bottom:32px}
+.cover h1{font-family:var(--font-display);font-size:36px;letter-spacing:-.02em;color:var(--navy);margin-bottom:8px}
+.cover .subtitle{font-size:18px;color:var(--slate);margin-bottom:32px}
+.cover-meta{display:flex;justify-content:center;gap:40px;font-size:13px;color:var(--silver);font-weight:500}
+.cover-meta span{display:flex;align-items:center;gap:6px}
+.badge-conf{display:inline-block;background:#fee2e2;color:#991b1b;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;text-transform:uppercase;letter-spacing:.06em;margin-top:24px}
+
+/* Sections */
+.section{margin-bottom:48px}
+.section-num{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.section h2{font-family:var(--font-display);font-size:24px;letter-spacing:-.02em;color:var(--navy);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.section h3{font-size:16px;font-weight:700;color:var(--navy);margin:24px 0 8px}
+.section p{font-size:15px;color:var(--slate);line-height:1.75;margin-bottom:12px}
+
+/* Stat grid */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:20px 0}
+.stat-box{background:var(--surface-dim);border:1px solid var(--border-light);border-radius:10px;padding:20px;text-align:center}
+.stat-box .val{font-family:var(--font-display);font-size:28px;color:var(--navy);line-height:1;margin-bottom:4px}
+.stat-box .label{font-size:12px;font-weight:600;color:var(--silver);text-transform:uppercase;letter-spacing:.06em}
+
+/* Tech table */
+.tech-table{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:14px}
+.tech-table th{text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--silver);padding:10px 14px;border-bottom:2px solid var(--navy);background:var(--surface-dim)}
+.tech-table td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--slate);vertical-align:top}
+.tech-table td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.tech-table tr:last-child td{border-bottom:none}
+
+/* Feature cards */
+.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:16px 0 24px}
+.feature-card{background:var(--surface-dim);border:1px solid var(--border-light);border-radius:10px;padding:20px}
+.feature-card h4{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.feature-card p{font-size:13px;color:var(--silver);line-height:1.6;margin:0}
+.feature-card .tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
+.tag-patent{background:#dbeafe;color:#1e40af}
+.tag-live{background:#dcfce7;color:#166534}
+.tag-beta{background:#fef3c7;color:#92400e}
+
+/* Architecture diagram */
+.arch-layers{margin:16px 0 24px}
+.arch-layer{display:flex;align-items:stretch;margin-bottom:2px}
+.arch-layer-label{width:120px;flex-shrink:0;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:14px 12px;display:flex;align-items:center;border-radius:8px 0 0 8px}
+.arch-layer-content{flex:1;padding:14px 16px;background:var(--surface-dim);border-radius:0 8px 8px 0;font-size:13px;color:var(--slate);display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.arch-chip{background:#fff;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:12px;font-weight:500;color:var(--navy);white-space:nowrap}
+.layer-edge .arch-layer-label{background:#dbeafe;color:#1e40af}
+.layer-compute .arch-layer-label{background:#e0e7ff;color:#3730a3}
+.layer-ai .arch-layer-label{background:#fae8ff;color:#7c3aed}
+.layer-data .arch-layer-label{background:#dcfce7;color:#166534}
+.layer-security .arch-layer-label{background:#fee2e2;color:#991b1b}
+
+/* Pipeline diagram */
+.pipeline{display:flex;align-items:center;gap:4px;margin:16px 0 24px;flex-wrap:wrap}
+.pipeline-step{background:var(--surface-dim);border:1px solid var(--border-light);border-radius:8px;padding:10px 16px;font-size:12px;font-weight:600;color:var(--navy);text-align:center;flex:1;min-width:90px}
+.pipeline-arrow{color:var(--silver);font-size:18px;flex-shrink:0}
+
+/* Security list */
+.security-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0 24px}
+.security-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--slate);padding:12px;background:var(--surface-dim);border-radius:8px;border:1px solid var(--border-light)}
+.security-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+
+/* Footer */
+.doc-footer{text-align:center;padding:40px 0;border-top:2px solid var(--navy);margin-top:60px;font-size:12px;color:var(--silver)}
+.doc-footer a{color:var(--accent);text-decoration:none}
+
+/* Responsive */
+@media(max-width:768px){
+.doc{padding:70px 24px 40px}
+.stat-grid{grid-template-columns:repeat(2,1fr)}
+.feature-grid{grid-template-columns:1fr}
+.security-grid{grid-template-columns:1fr}
+.arch-layer{flex-direction:column}
+.arch-layer-label{width:100%;border-radius:8px 8px 0 0}
+.arch-layer-content{border-radius:0 0 8px 8px}
+.cover-meta{flex-direction:column;gap:8px}
+.pipeline{flex-direction:column}
+.pipeline-arrow{transform:rotate(90deg)}
+}
+
+/* Print styles */
+@media print{
+.print-bar{display:none!important}
+.doc{padding:0;max-width:100%}
+.cover{page-break-after:always}
+.section{page-break-inside:avoid}
+body{font-size:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.stat-grid,.feature-grid,.security-grid{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="print-bar">
+    <div class="print-bar-brand">
+        <img src="logo.png" alt="HNTR AI">
+        <span>Technical Platform Overview</span>
+    </div>
+    <div class="print-bar-actions">
+        <a href="architecture.html" class="print-btn-outline">Back to Architecture</a>
+        <button class="print-btn" onclick="window.print()">Download PDF</button>
+    </div>
+</div>
+
+<div class="doc">
+
+<!-- COVER -->
+<div class="cover">
+    <img src="logo.png" alt="HNTR AI">
+    <h1>Technical Platform Overview</h1>
+    <div class="subtitle">Enterprise AI Infrastructure for Wealth Management Recruiting</div>
+    <div class="cover-meta">
+        <span>Version 3.26.0</span>
+        <span>February 2026</span>
+        <span>Patent Pending</span>
+    </div>
+    <div class="badge-conf">Confidential</div>
+</div>
+
+<!-- 1. EXECUTIVE SUMMARY -->
+<div class="section">
+    <div class="section-num">Section 01</div>
+    <h2>Executive Summary</h2>
+    <p>HNTR AI is a full-stack recruiting intelligence platform purpose-built for the wealth management industry. The system combines proprietary behavioral scoring algorithms, a multi-model AI pipeline, and enterprise-grade Azure infrastructure to help broker-dealers and RIAs identify, engage, and convert top financial advisors.</p>
+    <p>Built by a 20-year national recruiting veteran, the platform translates decades of field experience into software — replacing intuition with data-driven intelligence at every stage of the recruiting lifecycle.</p>
+
+    <div class="stat-grid">
+        <div class="stat-box"><div class="val">130K+</div><div class="label">Lines of Code</div></div>
+        <div class="stat-box"><div class="val">44</div><div class="label">Data Models</div></div>
+        <div class="stat-box"><div class="val">200+</div><div class="label">API Endpoints</div></div>
+        <div class="stat-box"><div class="val">13</div><div class="label">Azure Services</div></div>
+    </div>
+</div>
+
+<!-- 2. TECHNOLOGY STACK -->
+<div class="section">
+    <div class="section-num">Section 02</div>
+    <h2>Technology Stack</h2>
+    <p>The platform is built on modern, production-grade technologies selected for scalability, security, and developer velocity.</p>
+
+    <table class="tech-table">
+        <thead><tr><th>Layer</th><th>Technology</th><th>Details</th></tr></thead>
+        <tbody>
+            <tr><td>Framework</td><td>Next.js 14 (App Router)</td><td>React 18, TypeScript 5, server-side rendering with standalone Docker output</td></tr>
+            <tr><td>Database</td><td>PostgreSQL + Prisma 7</td><td>Azure Flexible Server D4ds_v5 (16GB), 44 data models, 1,463-line schema</td></tr>
+            <tr><td>Caching</td><td>Azure Redis Cache</td><td>Session management, API response caching, rate limiting</td></tr>
+            <tr><td>AI / LLM</td><td>Azure OpenAI (4 models)</td><td>Fine-tuned Cognitive OS, GPT-4o, GPT-4o-mini, text-embedding-3-large</td></tr>
+            <tr><td>Search</td><td>Azure AI Search S1</td><td>Full-text and semantic vector search across advisors and intelligence</td></tr>
+            <tr><td>Storage</td><td>Azure Blob Storage</td><td>Document management, firm files, model artifacts</td></tr>
+            <tr><td>Auth</td><td>NextAuth v5 (multi-provider)</td><td>Microsoft Entra ID, Google, Apple, Email+Password, SAML SSO, Passkeys</td></tr>
+            <tr><td>Styling</td><td>Tailwind CSS 3.4</td><td>Utility-first CSS with custom design system</td></tr>
+            <tr><td>Monitoring</td><td>Sentry + App Insights</td><td>Error tracking, performance monitoring, usage analytics</td></tr>
+            <tr><td>Payments</td><td>Stripe</td><td>Subscription billing, metered usage, multi-tier pricing</td></tr>
+            <tr><td>Communications</td><td>Twilio + Resend</td><td>SMS, voice, transactional email delivery</td></tr>
+            <tr><td>Enrichment</td><td>Apollo + FINRA + SEC</td><td>Contact data, regulatory filings, BrokerCheck integration</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- 3. SYSTEM ARCHITECTURE -->
+<div class="section">
+    <div class="section-num">Section 03</div>
+    <h2>System Architecture</h2>
+    <p>The platform follows a five-layer architecture deployed on Microsoft Azure, with full redundancy and failover across critical services.</p>
+
+    <div class="arch-layers">
+        <div class="arch-layer layer-edge">
+            <div class="arch-layer-label">Edge</div>
+            <div class="arch-layer-content">
+                <span class="arch-chip">Azure Front Door (CDN + WAF)</span>
+                <span class="arch-chip">App Service P3v3</span>
+                <span class="arch-chip">Container Registry</span>
+            </div>
+        </div>
+        <div class="arch-layer layer-compute">
+            <div class="arch-layer-label">Compute</div>
+            <div class="arch-layer-content">
+                <span class="arch-chip">Next.js Standalone</span>
+                <span class="arch-chip">200+ API Routes</span>
+                <span class="arch-chip">Server Actions</span>
+                <span class="arch-chip">Webhook Handlers</span>
+            </div>
+        </div>
+        <div class="arch-layer layer-ai">
+            <div class="arch-layer-label">AI / ML</div>
+            <div class="arch-layer-content">
+                <span class="arch-chip">Cognitive OS (Fine-tuned)</span>
+                <span class="arch-chip">GPT-4o</span>
+                <span class="arch-chip">GPT-4o-mini</span>
+                <span class="arch-chip">Embeddings (3-large)</span>
+            </div>
+        </div>
+        <div class="arch-layer layer-data">
+            <div class="arch-layer-label">Data</div>
+            <div class="arch-layer-content">
+                <span class="arch-chip">PostgreSQL D4ds_v5</span>
+                <span class="arch-chip">Redis Cache</span>
+                <span class="arch-chip">Blob Storage</span>
+                <span class="arch-chip">AI Search S1</span>
+                <span class="arch-chip">Key Vault</span>
+            </div>
+        </div>
+        <div class="arch-layer layer-security">
+            <div class="arch-layer-label">Security</div>
+            <div class="arch-layer-content">
+                <span class="arch-chip">Defender for Cloud</span>
+                <span class="arch-chip">Microsoft Sentinel (SIEM)</span>
+                <span class="arch-chip">Purview (Data Catalog)</span>
+                <span class="arch-chip">Application Insights</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 4. AI ENGINE -->
+<div class="section">
+    <div class="section-num">Section 04</div>
+    <h2>AI Engine &amp; Cognitive OS</h2>
+    <p>At the core of the platform is the Cognitive OS — a proprietary AI engine that models the psychological dynamics of advisor recruiting conversations. Unlike generic LLM wrappers, Cognitive OS applies domain-specific behavioral science to every AI-generated output.</p>
+
+    <h3>Dual-LLM Pipeline</h3>
+    <p>Every AI generation passes through a multi-stage pipeline designed to ensure quality, relevance, and brand safety:</p>
+
+    <div class="pipeline">
+        <div class="pipeline-step">Cognitive<br>Resolver</div>
+        <div class="pipeline-arrow">&#x2192;</div>
+        <div class="pipeline-step">Skeleton<br>Generation</div>
+        <div class="pipeline-arrow">&#x2192;</div>
+        <div class="pipeline-step">Voice<br>Synthesis</div>
+        <div class="pipeline-arrow">&#x2192;</div>
+        <div class="pipeline-step">Quality<br>Gates</div>
+        <div class="pipeline-arrow">&#x2192;</div>
+        <div class="pipeline-step">Red Team<br>Validation</div>
+        <div class="pipeline-arrow">&#x2192;</div>
+        <div class="pipeline-step">Output</div>
+    </div>
+
+    <h3>Four-Gate Quality Model</h3>
+    <table class="tech-table">
+        <thead><tr><th>Gate</th><th>Metric</th><th>Threshold</th><th>Purpose</th></tr></thead>
+        <tbody>
+            <tr><td>Contamination</td><td>0 — 100</td><td>&le; 5</td><td>Ensures output doesn't leak training data or competitor language</td></tr>
+            <tr><td>Framework</td><td>0 — 100</td><td>&ge; 70</td><td>Validates alignment with the recruiting communication framework</td></tr>
+            <tr><td>Red Team</td><td>11 tests</td><td>All pass</td><td>Checks brand voice, structure, channel fit, length, and tone</td></tr>
+            <tr><td>Cognitive</td><td>0 — 24</td><td>&ge; 18</td><td>Scores psychological accuracy of the generated message</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Multi-Model Failover</h3>
+    <p>The system maintains a three-tier failover chain ensuring 99.9% uptime for AI generation:</p>
+    <table class="tech-table">
+        <thead><tr><th>Tier</th><th>Model</th><th>Role</th></tr></thead>
+        <tbody>
+            <tr><td>Primary</td><td>Cognitive OS (Fine-tuned)</td><td>Domain-specific recruiting intelligence with proprietary weights</td></tr>
+            <tr><td>Secondary</td><td>GPT-4o</td><td>High-capability fallback for complex generation tasks</td></tr>
+            <tr><td>Tertiary</td><td>GPT-4o-mini</td><td>Fast, cost-efficient fallback maintaining core quality</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- 5. PROPRIETARY SCORING -->
+<div class="section">
+    <div class="section-num">Section 05</div>
+    <h2>Proprietary Scoring Engines</h2>
+    <p>Four patent-pending scoring engines work independently or together to power the recruiting intelligence layer. Each engine uses weighted multi-factor analysis calibrated by two decades of recruiting experience.</p>
+
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h4>HNTR Fit&#8482; <span class="tag tag-patent">Patent Pending</span></h4>
+            <p>Multi-dimensional advisor-firm compatibility scoring across culture, platform, compensation structure, and geographic alignment. Reduces mis-hires and early attrition.</p>
+        </div>
+        <div class="feature-card">
+            <h4>BLIX&#8482; Index <span class="tag tag-patent">Patent Pending</span></h4>
+            <p>Breakaway Likelihood Index analyzing production metrics, team dynamics, client complexity, and behavioral signals to predict advisor movement probability.</p>
+        </div>
+        <div class="feature-card">
+            <h4>HNTR Signal&#8482; <span class="tag tag-patent">Patent Pending</span></h4>
+            <p>Pre-outreach intelligence engine monitoring job postings, regulatory events, news coverage, and digital engagement to build passive familiarity before first contact.</p>
+        </div>
+        <div class="feature-card">
+            <h4>HNTR Watch&#8482; <span class="tag tag-patent">Patent Pending</span></h4>
+            <p>Real-time behavioral alerting tracking tenure stability, compensation gaps, firm market signals, and engagement patterns to optimize outreach timing.</p>
+        </div>
+    </div>
+
+    <h3>Configurable Weight System</h3>
+    <p>Each scoring engine exposes configurable weights allowing firms to calibrate algorithms to their specific recruiting strategy. Default calibrations are based on 20+ years of empirical recruiting data, with per-firm overrides supported at the admin level.</p>
+</div>
+
+<!-- 6. DATA MODEL -->
+<div class="section">
+    <div class="section-num">Section 06</div>
+    <h2>Data Model &amp; Multi-Tenant Architecture</h2>
+    <p>The platform uses a comprehensive relational data model with 44 tables supporting full multi-tenancy, role-based access control, and complete audit logging.</p>
+
+    <h3>Core Entity Groups</h3>
+    <table class="tech-table">
+        <thead><tr><th>Domain</th><th>Models</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td>Tenancy</td><td>Firm, User, UserSession</td><td>Multi-tenant isolation with firm-level configuration, 7-role RBAC</td></tr>
+            <tr><td>Advisors</td><td>TenantAdvisor, TenantActivity</td><td>Complete advisor profiles with 80+ fields, activity tracking across 8 channels</td></tr>
+            <tr><td>AI Generation</td><td>GenerationLog, MarketingDraft</td><td>Full audit trail of AI outputs with quality scores and prompt paths</td></tr>
+            <tr><td>Enrichment</td><td>EnrichmentLog</td><td>Multi-provider data enrichment (Apollo, FINRA, SEC) with cost tracking</td></tr>
+            <tr><td>Intelligence</td><td>IntelItem, Notification</td><td>Real-time intelligence alerts with AI deduplication and severity classification</td></tr>
+            <tr><td>Workflow</td><td>Workflow, WorkflowProgress, FlowRule</td><td>8-stage recruiting methodology with automation triggers and per-advisor tracking</td></tr>
+            <tr><td>Scoring</td><td>ScoringConfig, PipelineConfig</td><td>Per-firm scoring weights and customizable pipeline stages</td></tr>
+            <tr><td>Enterprise</td><td>FirmSSOConfig, Passkey, AuditLog</td><td>SAML SSO, WebAuthn, SOC 2-ready audit logging with risk classification</td></tr>
+            <tr><td>Integrations</td><td>UserGraphToken, TeamsWebhook</td><td>Microsoft 365 sync (Outlook, Teams, Calendar) with encrypted token storage</td></tr>
+            <tr><td>Billing</td><td>UsageRecord, FirmFeature</td><td>Stripe-powered metered billing with per-firm feature flags</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Advisor Data Depth</h3>
+    <p>Each advisor record supports 80+ structured fields including production metrics, AUM, team composition, prior firm history (up to 5 firms with date ranges), licensing data, compliance flags, CRD numbers, and enrichment snapshots from multiple providers. Records are versioned with full change history.</p>
+</div>
+
+<!-- 7. HNTR FLOW -->
+<div class="section">
+    <div class="section-num">Section 07</div>
+    <h2>HNTR FLOW Methodology Engine</h2>
+    <p>HNTR FLOW is an 8-stage recruiting workflow engine that codifies the relationship-led recruiting methodology into an automated, trackable system with built-in AI assistance at every stage.</p>
+
+    <div class="pipeline">
+        <div class="pipeline-step">Lead<br>ID</div>
+        <div class="pipeline-arrow">&#x2192;</div>
+        <div class="pipeline-step">Prospect</div>
+        <div class="pipeline-arrow">&#x2192;</div>
+        <div class="pipeline-step">Data<br>Gathering</div>
+        <div class="pipeline-arrow">&#x2192;</div>
+        <div class="pipeline-step">Diligence</div>
+        <div class="pipeline-arrow">&#x2192;</div>
+        <div class="pipeline-step">Prelim<br>App</div>
+        <div class="pipeline-arrow">&#x2192;</div>
+        <div class="pipeline-step">Offer<br>Design</div>
+        <div class="pipeline-arrow">&#x2192;</div>
+        <div class="pipeline-step">Offer<br>Present</div>
+        <div class="pipeline-arrow">&#x2192;</div>
+        <div class="pipeline-step">Affiliation</div>
+    </div>
+
+    <h3>Automation Capabilities</h3>
+    <p>Each stage supports configurable triggers and automated actions:</p>
+    <table class="tech-table">
+        <thead><tr><th>Trigger Type</th><th>Actions Available</th></tr></thead>
+        <tbody>
+            <tr><td>Stage entry / exit</td><td>AI content generation, task creation, team notifications</td></tr>
+            <tr><td>Activity completion</td><td>Next-step recommendations, pipeline advancement prompts</td></tr>
+            <tr><td>Milestone reached</td><td>Manager alerts, compliance checks, document generation</td></tr>
+            <tr><td>Stall detection</td><td>Re-engagement content, escalation alerts, strategy suggestions</td></tr>
+            <tr><td>Score threshold</td><td>Priority bumps, outreach triggers, intel deep-dives</td></tr>
+        </tbody>
+    </table>
+
+    <h3>AI Content Generation</h3>
+    <p>The workflow engine can auto-generate 11 content types: emails, call scripts, LinkedIn messages, voicemail scripts, text messages, meeting agendas, proposal sections, objection responses, internal notes, collateral, and follow-ups — all contextualized to the advisor's current stage and behavioral profile.</p>
+</div>
+
+<!-- 8. API ARCHITECTURE -->
+<div class="section">
+    <div class="section-num">Section 08</div>
+    <h2>API Architecture</h2>
+    <p>The platform exposes 200+ RESTful API endpoints organized into versioned route groups with comprehensive authentication, rate limiting, and validation.</p>
+
+    <table class="tech-table">
+        <thead><tr><th>Route Group</th><th>Endpoints</th><th>Scope</th></tr></thead>
+        <tbody>
+            <tr><td>Authentication</td><td>25+</td><td>Multi-provider login, 2FA (TOTP), WebAuthn, SAML SSO, password management</td></tr>
+            <tr><td>Advisors (CRUD)</td><td>15+</td><td>Create, read, update, verify, enrich, bulk operations, intel overlay</td></tr>
+            <tr><td>AI Generation</td><td>10+</td><td>Message, playbook, marketing content, sidebar agent, flow automation</td></tr>
+            <tr><td>Enrichment</td><td>8+</td><td>Apollo search/contact, FINRA BrokerCheck, SEC IAPD, credit tracking</td></tr>
+            <tr><td>Intelligence</td><td>10+</td><td>Intel feed, dossier generation, search, firm tracking</td></tr>
+            <tr><td>Workflow / Flow</td><td>20+</td><td>CRUD, progress tracking, rule management, template library, execution logs</td></tr>
+            <tr><td>Integrations</td><td>15+</td><td>Microsoft Graph (Outlook/Teams/Calendar), Slack connectors</td></tr>
+            <tr><td>Admin / Platform</td><td>30+</td><td>Tenant management, user provisioning, feature flags, audit, SCIM</td></tr>
+            <tr><td>Billing</td><td>5+</td><td>Stripe webhooks, usage metering, subscription management</td></tr>
+            <tr><td>Export / Documents</td><td>10+</td><td>CSV/DOCX export, document upload/download, playbook generation</td></tr>
+        </tbody>
+    </table>
+
+    <h3>API Security</h3>
+    <p>All endpoints are protected by session-based authentication with JWT tokens, tenant isolation middleware, role-based permission checks, Zod schema validation, and configurable rate limiting. Webhook endpoints use HMAC-SHA256 signature verification.</p>
+</div>
+
+<!-- 9. SECURITY -->
+<div class="section">
+    <div class="section-num">Section 09</div>
+    <h2>Security &amp; Compliance</h2>
+    <p>The platform is designed with a SOC 2-ready security posture, implementing defense in depth across authentication, data protection, infrastructure, and audit logging.</p>
+
+    <div class="security-grid">
+        <div class="security-item">
+            <div class="security-icon" style="background:#dbeafe;color:#1e40af">&#x1F512;</div>
+            <div><strong>Multi-Factor Authentication</strong><br>TOTP 2FA, WebAuthn/Passkeys, backup codes, and forced password change policies</div>
+        </div>
+        <div class="security-item">
+            <div class="security-icon" style="background:#e0e7ff;color:#3730a3">&#x1F3E2;</div>
+            <div><strong>Enterprise SSO</strong><br>SAML 2.0 + OIDC with auto-provisioning, domain enforcement, and SCIM user sync</div>
+        </div>
+        <div class="security-item">
+            <div class="security-icon" style="background:#dcfce7;color:#166534">&#x1F6E1;</div>
+            <div><strong>Encryption at Rest &amp; Transit</strong><br>AES-256-GCM for sensitive fields, TLS 1.3, Azure Key Vault for secrets</div>
+        </div>
+        <div class="security-item">
+            <div class="security-icon" style="background:#fef3c7;color:#92400e">&#x1F4CB;</div>
+            <div><strong>SOC 2 Audit Logging</strong><br>Immutable audit trail with risk classification, hashed IPs, and data sensitivity labels</div>
+        </div>
+        <div class="security-item">
+            <div class="security-icon" style="background:#fee2e2;color:#991b1b">&#x26A0;</div>
+            <div><strong>Threat Detection</strong><br>Azure Defender + Microsoft Sentinel SIEM for real-time threat monitoring</div>
+        </div>
+        <div class="security-item">
+            <div class="security-icon" style="background:#fae8ff;color:#7c3aed">&#x1F465;</div>
+            <div><strong>RBAC (7 Roles)</strong><br>30+ granular permissions: Business Owner, Admin, Manager, Recruiter, Viewer, Compliance</div>
+        </div>
+        <div class="security-item">
+            <div class="security-icon" style="background:#e0f2fe;color:#0369a1">&#x1F310;</div>
+            <div><strong>Security Headers</strong><br>Strict CSP, HSTS, X-Frame-Options, Permissions-Policy on all responses</div>
+        </div>
+        <div class="security-item">
+            <div class="security-icon" style="background:#f0fdf4;color:#15803d">&#x2699;</div>
+            <div><strong>Rate Limiting</strong><br>Per-endpoint rate limiting with sliding window, IP tracking, and automatic blocking</div>
+        </div>
+    </div>
+</div>
+
+<!-- 10. INTEGRATIONS -->
+<div class="section">
+    <div class="section-num">Section 10</div>
+    <h2>Integrations &amp; Extensibility</h2>
+
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h4>Microsoft 365 <span class="tag tag-live">Live</span></h4>
+            <p>Outlook email sync (bidirectional), Teams webhook notifications, Calendar availability &amp; event creation via Microsoft Graph.</p>
+        </div>
+        <div class="feature-card">
+            <h4>Apollo.io <span class="tag tag-live">Live</span></h4>
+            <p>Contact enrichment, people search, organization lookup with credit cost tracking and rate limit management.</p>
+        </div>
+        <div class="feature-card">
+            <h4>FINRA BrokerCheck <span class="tag tag-live">Live</span></h4>
+            <p>Regulatory record verification, employment history, disclosure events, and license validation.</p>
+        </div>
+        <div class="feature-card">
+            <h4>Stripe Billing <span class="tag tag-live">Live</span></h4>
+            <p>Subscription management, metered usage billing, multi-tier pricing (Starter, Professional, Enterprise).</p>
+        </div>
+        <div class="feature-card">
+            <h4>Webhooks (Outbound) <span class="tag tag-live">Live</span></h4>
+            <p>Configurable webhook endpoints with HMAC-SHA256 signing, retry logic, and delivery tracking.</p>
+        </div>
+        <div class="feature-card">
+            <h4>SCIM Provisioning <span class="tag tag-live">Live</span></h4>
+            <p>SCIM 2.0 endpoint for automated user provisioning and deprovisioning from enterprise identity providers.</p>
+        </div>
+    </div>
+</div>
+
+<!-- 11. DEPLOYMENT -->
+<div class="section">
+    <div class="section-num">Section 11</div>
+    <h2>Deployment &amp; Infrastructure</h2>
+
+    <table class="tech-table">
+        <thead><tr><th>Component</th><th>Azure SKU</th><th>Specification</th></tr></thead>
+        <tbody>
+            <tr><td>Compute</td><td>App Service P3v3</td><td>8 vCPU, 32GB RAM, SSD, auto-scale, staging slots</td></tr>
+            <tr><td>Database</td><td>PostgreSQL Flexible D4ds_v5</td><td>4 vCPU, 16GB RAM, 128GB storage, automated backups</td></tr>
+            <tr><td>Cache</td><td>Redis Standard C1</td><td>1GB, session store, API caching, rate limit counters</td></tr>
+            <tr><td>Search</td><td>AI Search S1</td><td>Full-text + semantic vector search, 50GB index capacity</td></tr>
+            <tr><td>CDN / WAF</td><td>Front Door Standard</td><td>Global edge caching, DDoS protection, WAF rules</td></tr>
+            <tr><td>Containers</td><td>Container Registry Basic</td><td>Docker image hosting, vulnerability scanning</td></tr>
+            <tr><td>Storage</td><td>Blob Storage (Hot)</td><td>Documents, model artifacts, exported files</td></tr>
+            <tr><td>Secrets</td><td>Key Vault Standard</td><td>API keys, connection strings, certificates</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Deployment Pipeline</h3>
+    <p>Containerized deployment using Docker multi-stage builds with Node.js 22 Alpine. Images are built with Azure Container Registry, deployed to App Service with staging slot warm-up, and promoted to production via slot swap for zero-downtime releases.</p>
+</div>
+
+<!-- 12. iOS -->
+<div class="section">
+    <div class="section-num">Section 12</div>
+    <h2>Mobile Platform</h2>
+    <p>HNTR AI includes a native iOS application built with Capacitor, providing full platform access from iPhone and iPad. The mobile app loads the production web application within a native shell, enabling push notifications, biometric authentication, and offline-capable features while maintaining a single codebase.</p>
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+    <img src="logo.png" alt="HNTR AI" style="height:32px;width:auto;margin-bottom:16px;display:block;margin-left:auto;margin-right:auto">
+    <p><strong>HNTR AI, Inc.</strong> &middot; Recruiting Intelligence for Wealth Management</p>
+    <p style="margin-top:8px">Patent Pending &middot; Provisional Application #63/959,467</p>
+    <p style="margin-top:8px">This document is confidential and intended solely for the recipient.<br>
+    For inquiries: <a href="mailto:info@hntrai.com">info@hntrai.com</a> &middot; <a href="https://hntrai.com">hntrai.com</a></p>
+    <p style="margin-top:16px;font-size:11px;color:#9ca3af">&copy; 2026 HNTR AI. All rights reserved.</p>
+</div>
+
+</div>
+
+</body>
+</html>
