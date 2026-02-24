@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform — HNTR AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0c1d27;--navy-deep:#081419;--slate:#2f495a;--slate-light:#3d5d71;--silver:#6d7d8d;--silver-light:#94a3b3;--ice:#c8d3dc;--surface:#fff;--surface-dim:#f4f6f8;--surface-warm:#f8fafb;--border:#dfe4ea;--border-light:#edf0f4;--accent-glow:rgba(47,73,90,.12);--radius:12px;--radius-lg:20px;--font-display:'Instrument Serif',Georgia,serif;--font-body:'DM Sans',system-ui,sans-serif}*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:var(--font-body);color:var(--navy);background:var(--surface);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border-light);transition:box-shadow .3s}nav.scrolled{box-shadow:0 1px 16px rgba(12,29,39,.06)}.nav-inner{max-width:1200px;margin:0 auto;padding:0 32px;height:72px;display:flex;align-items:center;justify-content:space-between}.logo-link{display:flex;align-items:center;text-decoration:none}.logo-link img{height:40px;width:auto}.nav-links{display:flex;align-items:center;gap:36px;list-style:none}.nav-links a{font-size:14px;font-weight:500;color:var(--silver);text-decoration:none;transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--navy)}.nav-cta{background:var(--navy)!important;color:#fff!important;padding:10px 24px!important;border-radius:8px;font-size:14px!important;font-weight:600!important;transition:all .2s!important}.nav-cta:hover{background:var(--slate)!important;transform:translateY(-1px)}.nav-toggle{display:none;background:none;border:none;cursor:pointer;width:32px;height:32px;position:relative}.nav-toggle span{display:block;width:20px;height:2px;background:var(--navy);position:absolute;left:6px;transition:.3s}.nav-toggle span:nth-child(1){top:9px}.nav-toggle span:nth-child(2){top:15px}.nav-toggle span:nth-child(3){top:21px}
+section{padding:120px 32px}.container{max-width:1200px;margin:0 auto}.container-narrow{max-width:800px;margin:0 auto}.section-label{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--slate);margin-bottom:16px}.section-title{font-family:var(--font-display);font-size:clamp(32px,4vw,48px);line-height:1.15;letter-spacing:-.03em;color:var(--navy);margin-bottom:20px}.section-desc{font-size:17px;color:var(--silver);line-height:1.7;max-width:560px;margin-bottom:40px}.btn-primary{background:var(--navy);color:#fff;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:all .2s;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px}.btn-primary:hover{background:var(--slate);transform:translateY(-2px);box-shadow:0 8px 28px rgba(12,29,39,.18)}.btn-secondary{background:transparent;color:var(--navy);padding:14px 32px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;border:1.5px solid var(--border);transition:all .2s;display:inline-flex;align-items:center;gap:8px}.btn-secondary:hover{border-color:var(--slate);background:var(--surface-dim)}
+
+/* Page hero */
+.page-hero{padding-top:160px;padding-bottom:80px;text-align:center;position:relative;overflow:hidden}.page-hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,rgba(47,73,90,.05) 0%,transparent 65%);pointer-events:none}.page-hero h1{font-family:var(--font-display);font-size:clamp(40px,5vw,64px);line-height:1.1;letter-spacing:-.03em;color:var(--navy);margin-bottom:20px}.page-hero h1 em{font-style:italic;color:var(--slate)}.page-hero p{font-size:18px;color:var(--silver);max-width:600px;margin:0 auto;line-height:1.7}
+
+/* Module sections */
+.module{border-bottom:1px solid var(--border-light)}.module:nth-child(even){background:var(--surface-dim)}.module-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}.module-inner.reverse{direction:rtl}.module-inner.reverse>*{direction:ltr}.module-visual{background:var(--surface-dim);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;min-height:360px;display:flex;flex-direction:column;justify-content:center}.module:nth-child(even) .module-visual{background:#fff}
+.module-content .section-label{margin-bottom:12px}.module-content h2{font-family:var(--font-display);font-size:clamp(28px,3.5vw,40px);line-height:1.15;letter-spacing:-.02em;color:var(--navy);margin-bottom:8px}.module-content .patent{font-size:11px;font-weight:700;color:var(--slate-light);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;display:block}.module-content .desc{font-size:16px;color:var(--silver);line-height:1.75;margin-bottom:24px}.module-features{list-style:none;display:flex;flex-direction:column;gap:12px}.module-features li{display:flex;align-items:flex-start;gap:12px;font-size:15px;color:var(--silver);line-height:1.6}.module-features li::before{content:'';flex-shrink:0;width:20px;height:20px;margin-top:2px;border-radius:50%;background:rgba(47,73,90,.1);display:flex;align-items:center;justify-content:center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%232f495a'%3E%3Cpath d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");background-size:12px;background-position:center;background-repeat:no-repeat}
+
+/* Visual mockups inside module sections */
+.vis-metric{display:flex;align-items:center;gap:16px;padding:16px;background:#fff;border:1px solid var(--border-light);border-radius:10px;margin-bottom:12px}.module:nth-child(even) .vis-metric{background:var(--surface-dim)}.vis-metric-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}.vis-metric-content{flex:1}.vis-metric-label{font-size:11px;font-weight:600;color:var(--silver);text-transform:uppercase;letter-spacing:.05em}.vis-metric-value{font-size:20px;font-weight:700;color:var(--navy);letter-spacing:-.02em}.vis-metric-bar{height:4px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden}.vis-metric-bar-fill{height:100%;border-radius:2px}
+
+.vis-alert{padding:14px 16px;background:#fff;border:1px solid var(--border-light);border-radius:10px;margin-bottom:10px;display:flex;align-items:center;gap:12px}.module:nth-child(even) .vis-alert{background:var(--surface-dim)}.vis-alert-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}.vis-alert-dot.red{background:#dc2626}.vis-alert-dot.amber{background:#d97706}.vis-alert-dot.green{background:#16a34a}.vis-alert-text{font-size:13px;color:var(--navy);font-weight:500;flex:1}.vis-alert-time{font-size:11px;color:var(--silver)}
+
+.vis-score-card{padding:20px;background:#fff;border:1px solid var(--border-light);border-radius:10px;margin-bottom:12px;text-align:center}.module:nth-child(even) .vis-score-card{background:var(--surface-dim)}.vis-score-ring{width:80px;height:80px;border-radius:50%;border:4px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;font-weight:700;color:var(--navy)}.vis-score-label{font-size:13px;color:var(--silver);font-weight:500}.vis-traits{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}.vis-trait{font-size:11px;font-weight:600;padding:4px 10px;border-radius:100px;background:rgba(47,73,90,.08);color:var(--slate)}
+
+/* Integration section */
+.integrations{text-align:center;background:var(--surface-dim);border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light)}.integration-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:48px}.integration-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:32px 24px;text-align:center;transition:all .3s}.integration-card:hover{border-color:var(--slate);transform:translateY(-2px);box-shadow:0 4px 16px var(--accent-glow)}.integration-card .ic-icon{font-size:28px;margin-bottom:12px}.integration-card h4{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px}.integration-card p{font-size:13px;color:var(--silver);line-height:1.5}
+
+/* CTA */
+.page-cta{text-align:center;position:relative;overflow:hidden}.page-cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(47,73,90,.06) 0%,transparent 65%);pointer-events:none}.page-cta .section-title{font-size:clamp(32px,4vw,48px)}.page-cta em{font-family:var(--font-display);font-style:italic;color:var(--slate)}
+
+/* Footer */
+footer{background:var(--navy-deep);color:#fff;padding:64px 32px 40px}.footer-inner{max-width:1200px;margin:0 auto}.footer-top{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08)}.footer-brand-logo{height:32px;width:auto;filter:brightness(0) invert(1) brightness(.7);margin-bottom:12px}.footer-brand p{font-size:14px;color:rgba(255,255,255,.4);line-height:1.7;max-width:280px}.footer-col h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.3);margin-bottom:20px}.footer-col a{display:block;font-size:14px;color:rgba(255,255,255,.6);text-decoration:none;padding:4px 0;transition:color .2s}.footer-col a:hover{color:#fff}.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:32px;font-size:13px;color:rgba(255,255,255,.25)}.footer-bottom a{color:rgba(255,255,255,.25);text-decoration:none;margin-left:24px;transition:color .2s}.footer-bottom a:hover{color:rgba(255,255,255,.5)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:960px){.module-inner,.module-inner.reverse{grid-template-columns:1fr;direction:ltr;gap:40px}.integration-grid{grid-template-columns:repeat(2,1fr)}.footer-top{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){section{padding:80px 20px}.nav-links{display:none}.nav-toggle{display:block}.nav-links.open{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:#fff;padding:24px 32px;border-bottom:1px solid var(--border);gap:16px}.integration-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.page-hero h1{font-size:36px}}
+</style>
+</head>
+<body>
+
+<nav id="nav"><div class="nav-inner"><a href="index.html" class="logo-link"><img src="sitelogo.png" alt="HNTR AI"></a><button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></button><ul class="nav-links"><li><a href="product.html" class="active">Platform</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="contact.html" class="nav-cta">Request Demo</a></li></ul></div></nav>
+
+<section class="page-hero">
+<div class="container">
+<h1>Recruiting intelligence,<br><em>deconstructed</em></h1>
+<p>Four proprietary modules working in concert to transform how wealth management firms identify, evaluate, and win top advisor talent.</p>
+</div>
+</section>
+
+<!-- SIGNAL -->
+<section class="module" id="signal"><div class="container"><div class="module-inner reveal">
+<div class="module-content">
+<div class="section-label">Module 01</div>
+<h2>HNTR Signal&trade;</h2>
+<span class="patent">Patent Pending</span>
+<p class="desc">Signal creates strategic brand presence and passive familiarity with target advisors long before a recruiter makes contact. By the time you reach out, the advisor already recognizes your firm &mdash; dramatically increasing response rates and engagement quality.</p>
+<ul class="module-features">
+<li>Targeted visibility campaigns tailored to advisor segments</li>
+<li>Multi-channel brand touchpoints calibrated to advisor behavior</li>
+<li>Engagement scoring tracks warmth before first outreach</li>
+<li>Reduces cold outreach friction by up to 60%</li>
+</ul>
+</div>
+<div class="module-visual">
+<div class="vis-metric"><div class="vis-metric-icon" style="background:rgba(47,73,90,.1)">&#x1F4E1;</div><div class="vis-metric-content"><div class="vis-metric-label">Brand Familiarity Score</div><div class="vis-metric-value">73 / 100</div><div class="vis-metric-bar"><div class="vis-metric-bar-fill" style="width:73%;background:var(--slate)"></div></div></div></div>
+<div class="vis-metric"><div class="vis-metric-icon" style="background:rgba(22,163,74,.08)">&#x1F4C8;</div><div class="vis-metric-content"><div class="vis-metric-label">Content Engagement</div><div class="vis-metric-value">12 Touchpoints</div><div class="vis-metric-bar"><div class="vis-metric-bar-fill" style="width:60%;background:#16a34a"></div></div></div></div>
+<div class="vis-metric"><div class="vis-metric-icon" style="background:rgba(217,119,6,.08)">&#x23F1;</div><div class="vis-metric-content"><div class="vis-metric-label">Avg. Time to Response</div><div class="vis-metric-value">2.3 days</div><div class="vis-metric-bar"><div class="vis-metric-bar-fill" style="width:35%;background:#d97706"></div></div></div></div>
+</div>
+</div></div></section>
+
+<!-- WATCH -->
+<section class="module" id="watch"><div class="container"><div class="module-inner reverse reveal">
+<div class="module-content">
+<div class="section-label">Module 02</div>
+<h2>HNTR Watch&trade;</h2>
+<span class="patent">Patent Pending</span>
+<p class="desc">Watch monitors real-time advisor behavior, engagement patterns, and career trigger events &mdash; delivering actionable alerts so your team can act at the exact right moment. No more relying on stale lists or delayed intelligence.</p>
+<ul class="module-features">
+<li>Real-time behavioral monitoring across public signals</li>
+<li>Career trigger detection: role changes, compliance events, firm news</li>
+<li>Configurable alert thresholds by priority and segment</li>
+<li>Integrates directly into your recruiting team's workflow</li>
+</ul>
+</div>
+<div class="module-visual">
+<div class="vis-alert"><div class="vis-alert-dot red"></div><div class="vis-alert-text">J. Richardson &mdash; Updated LinkedIn, removed firm affiliation</div><div class="vis-alert-time">2m ago</div></div>
+<div class="vis-alert"><div class="vis-alert-dot red"></div><div class="vis-alert-text">S. Martinez &mdash; Firm announced branch restructuring</div><div class="vis-alert-time">18m ago</div></div>
+<div class="vis-alert"><div class="vis-alert-dot amber"></div><div class="vis-alert-text">M. Patel &mdash; Engaged with competitor content 3x this week</div><div class="vis-alert-time">1h ago</div></div>
+<div class="vis-alert"><div class="vis-alert-dot green"></div><div class="vis-alert-text">K. Thompson &mdash; Opened recruiting email, clicked CTA</div><div class="vis-alert-time">3h ago</div></div>
+<div class="vis-alert"><div class="vis-alert-dot amber"></div><div class="vis-alert-text">R. Nguyen &mdash; Registered for independent RIA webinar</div><div class="vis-alert-time">5h ago</div></div>
+</div>
+</div></div></section>
+
+<!-- FIT -->
+<section class="module" id="fit"><div class="container"><div class="module-inner reveal">
+<div class="module-content">
+<div class="section-label">Module 03</div>
+<h2>HNTR Fit&trade;</h2>
+<span class="patent">Patent Pending</span>
+<p class="desc">Production numbers only tell part of the story. Fit&trade; evaluates advisor-firm compatibility across culture, business model, client demographics, and behavioral traits &mdash; so you recruit advisors who thrive, not just transfer.</p>
+<ul class="module-features">
+<li>Multi-dimensional compatibility scoring beyond AUM</li>
+<li>Culture and values alignment modeling</li>
+<li>Business model fit: fee-based, hybrid, commission preferences</li>
+<li>Reduces attrition and post-hire regret significantly</li>
+</ul>
+</div>
+<div class="module-visual">
+<div class="vis-score-card">
+<div class="vis-score-ring" style="border-color:var(--slate)">91</div>
+<div class="vis-score-label">Overall Fit Score &mdash; J. Richardson &times; Your Firm</div>
+<div class="vis-traits">
+<span class="vis-trait">Fee-Based</span>
+<span class="vis-trait">Client-First</span>
+<span class="vis-trait">Team Builder</span>
+<span class="vis-trait">HNW Focus</span>
+<span class="vis-trait">Growth-Oriented</span>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+<div class="vis-metric" style="margin:0"><div class="vis-metric-content"><div class="vis-metric-label">Culture Match</div><div class="vis-metric-value">94%</div><div class="vis-metric-bar"><div class="vis-metric-bar-fill" style="width:94%;background:#16a34a"></div></div></div></div>
+<div class="vis-metric" style="margin:0"><div class="vis-metric-content"><div class="vis-metric-label">Business Model</div><div class="vis-metric-value">88%</div><div class="vis-metric-bar"><div class="vis-metric-bar-fill" style="width:88%;background:var(--slate)"></div></div></div></div>
+</div>
+</div>
+</div></div></section>
+
+<!-- BLIX -->
+<section class="module" id="blix"><div class="container"><div class="module-inner reverse reveal">
+<div class="module-content">
+<div class="section-label">Module 04</div>
+<h2>BLIX&trade; Index</h2>
+<span class="patent">Patent Pending &middot; Breakaway Likelihood Index</span>
+<p class="desc">BLIX&trade; is the industry's first predictive breakaway score. It analyzes lifestyle signals, career triggers, sentiment patterns, and environmental factors to forecast which advisors are most likely to make a move &mdash; before they even know it themselves.</p>
+<ul class="module-features">
+<li>Proprietary scoring model combining 50+ signal inputs</li>
+<li>Lifestyle and sentiment analysis beyond career data</li>
+<li>Continuously recalibrated based on market conditions</li>
+<li>Prioritizes recruiter time on highest-probability targets</li>
+</ul>
+</div>
+<div class="module-visual">
+<div class="vis-metric"><div class="vis-metric-icon" style="background:rgba(220,38,38,.08)">&#x1F525;</div><div class="vis-metric-content"><div class="vis-metric-label">J. Richardson &mdash; BLIX Score</div><div class="vis-metric-value" style="color:#dc2626">92 / 100</div><div class="vis-metric-bar"><div class="vis-metric-bar-fill" style="width:92%;background:#dc2626"></div></div></div></div>
+<div class="vis-metric"><div class="vis-metric-icon" style="background:rgba(217,119,6,.08)">&#x1F525;</div><div class="vis-metric-content"><div class="vis-metric-label">S. Martinez &mdash; BLIX Score</div><div class="vis-metric-value" style="color:#d97706">86 / 100</div><div class="vis-metric-bar"><div class="vis-metric-bar-fill" style="width:86%;background:#d97706"></div></div></div></div>
+<div class="vis-metric"><div class="vis-metric-icon" style="background:rgba(217,119,6,.08)">&#x1F525;</div><div class="vis-metric-content"><div class="vis-metric-label">M. Patel &mdash; BLIX Score</div><div class="vis-metric-value" style="color:#d97706">74 / 100</div><div class="vis-metric-bar"><div class="vis-metric-bar-fill" style="width:74%;background:#d97706"></div></div></div></div>
+<div style="margin-top:16px;padding:14px 16px;background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.12);border-radius:10px;font-size:13px;color:var(--navy)"><strong>Insight:</strong> Richardson shows 3 concurrent breakaway signals &mdash; recommend immediate outreach sequence.</div>
+</div>
+</div></div></section>
+
+<!-- Integrations -->
+<section class="integrations"><div class="container">
+<div class="section-label reveal">Ecosystem</div>
+<h2 class="section-title reveal" style="text-align:center">Designed to fit your<br>existing workflow</h2>
+<p class="section-desc reveal" style="margin-left:auto;margin-right:auto;text-align:center">HNTR AI layers into the tools your recruiting team already uses &mdash; no rip-and-replace required.</p>
+<div class="integration-grid reveal">
+<div class="integration-card"><div class="ic-icon">&#x1F4CA;</div><h4>CRM Systems</h4><p>Sync advisor data and pipeline stages with Salesforce, HubSpot, and more.</p></div>
+<div class="integration-card"><div class="ic-icon">&#x1F4E7;</div><h4>Email &amp; Outreach</h4><p>Trigger intelligent outreach sequences based on Watch&trade; alerts.</p></div>
+<div class="integration-card"><div class="ic-icon">&#x1F512;</div><h4>Compliance</h4><p>Built-in guardrails for FINRA, SEC, and state-level recruiting regulations.</p></div>
+<div class="integration-card"><div class="ic-icon">&#x1F4C1;</div><h4>Data Sources</h4><p>Connects to BrokerCheck, SEC filings, and proprietary behavioral feeds.</p></div>
+</div>
+</div></section>
+
+<!-- CTA -->
+<section class="page-cta"><div class="container">
+<div class="section-label reveal">Get Started</div>
+<h2 class="section-title reveal" style="text-align:center">See the platform <em>in action</em></h2>
+<p class="section-desc reveal" style="margin-left:auto;margin-right:auto;text-align:center;margin-bottom:40px">Request a personalized walkthrough and see how HNTR AI can transform your recruiting operation.</p>
+<div style="text-align:center" class="reveal"><a href="contact.html" class="btn-primary">Request a Demo &rarr;</a></div>
+</div></section>
+
+<footer><div class="footer-inner"><div class="footer-top">
+<div class="footer-brand"><img src="sitelogo.png" alt="HNTR AI" class="footer-brand-logo"><p>Recruiting intelligence for wealth management. Identify, engage, and convert top financial advisors with AI-powered behavioral signals.</p></div>
+<div class="footer-col"><h4>Platform</h4><a href="product.html#signal">HNTR Signal&trade;</a><a href="product.html#watch">HNTR Watch&trade;</a><a href="product.html#fit">HNTR Fit&trade;</a><a href="product.html#blix">BLIX&trade; Index</a></div>
+<div class="footer-col"><h4>Company</h4><a href="about.html">About</a><a href="about.html#founder">Founder</a><a href="contact.html">Contact</a></div>
+<div class="footer-col"><h4>Legal</h4><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Patent Notice</a></div>
+</div><div class="footer-bottom"><span>&copy; 2026 HNTR AI. All rights reserved.</span><div><a href="https://www.linkedin.com/in/paulcardenas" target="_blank">LinkedIn</a></div></div></div></footer>
+
+<script>
+window.addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20)});
+var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting)entry.target.classList.add('visible')})},{threshold:0.1,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(function(el){observer.observe(el)});
+</script>
+</body>
+</html>

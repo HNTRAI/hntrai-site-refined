@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HNTR AI — Platform Architecture</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0c10;
+            --bg-card: #111318;
+            --bg-card-hover: #161920;
+            --bg-gate: #0d0f14;
+            --border: #1e2230;
+            --border-accent: #2a3045;
+            --text: #e8eaf0;
+            --text-dim: #8b90a0;
+            --text-muted: #5a5f72;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --accent-green: #22c55e;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #a855f7;
+            --accent-cyan: #06b6d4;
+            --navy: #0f1629;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-lg: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 16px 40px;
+            background: rgba(10, 12, 16, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .nav-logo img { height: 32px; }
+        .nav-logo span { font-weight: 700; font-size: 18px; color: var(--text); letter-spacing: -0.3px; }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a {
+            color: var(--text-dim); text-decoration: none; font-size: 14px; font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .nav-badge {
+            font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            padding: 4px 10px; border-radius: 20px;
+            background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(59,130,246,0.3);
+        }
+
+        /* GATE */
+        .gate-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 200;
+            background: var(--bg-gate);
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        .gate-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .gate-box {
+            text-align: center; max-width: 440px; padding: 48px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+        .gate-box img { height: 40px; margin-bottom: 24px; }
+        .gate-box h2 {
+            font-family: 'DM Serif Display', serif; font-size: 28px;
+            font-weight: 400; margin-bottom: 8px; color: var(--text);
+        }
+        .gate-box p { color: var(--text-dim); font-size: 14px; margin-bottom: 28px; line-height: 1.7; }
+        .gate-input-wrap { display: flex; gap: 8px; margin-bottom: 12px; }
+        .gate-input {
+            flex: 1; padding: 12px 16px; border-radius: var(--radius-sm);
+            background: var(--bg); border: 1px solid var(--border);
+            color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;
+            outline: none; transition: border-color 0.2s;
+        }
+        .gate-input:focus { border-color: var(--accent); }
+        .gate-input::placeholder { color: var(--text-muted); }
+        .gate-btn {
+            padding: 12px 24px; border-radius: var(--radius-sm); border: none;
+            background: var(--accent); color: #fff; font-weight: 600; font-size: 14px;
+            cursor: pointer; transition: all 0.2s; white-space: nowrap;
+        }
+        .gate-btn:hover { background: #2563eb; transform: translateY(-1px); }
+        .gate-error {
+            color: var(--accent-red); font-size: 13px; min-height: 20px;
+            margin-top: 4px; transition: opacity 0.2s;
+        }
+        .gate-footer { color: var(--text-muted); font-size: 12px; margin-top: 20px; }
+
+        /* MAIN CONTENT */
+        .content { padding-top: 80px; opacity: 0; transition: opacity 0.6s; }
+        .content.visible { opacity: 1; }
+
+        /* HERO */
+        .hero {
+            padding: 80px 40px 60px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(59,130,246,0.03) 0%, transparent 60%);
+            position: relative;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 80px; left: 50%; transform: translateX(-50%);
+            width: 600px; height: 600px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; border-radius: 24px; font-size: 12px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            background: rgba(34,197,94,0.1); color: var(--accent-green);
+            border: 1px solid rgba(34,197,94,0.2); margin-bottom: 24px;
+        }
+        .hero-badge::before {
+            content: ''; width: 6px; height: 6px; border-radius: 50%;
+            background: var(--accent-green); animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .hero h1 {
+            font-family: 'DM Serif Display', serif; font-size: 52px;
+            font-weight: 400; line-height: 1.15; margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p { color: var(--text-dim); font-size: 18px; max-width: 640px; margin: 0 auto 32px; }
+        .hero-meta {
+            display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+        }
+        .hero-meta-item {
+            font-size: 13px; color: var(--text-muted);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .hero-meta-item .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+
+        /* SECTION */
+        .section {
+            padding: 60px 40px; max-width: 1200px; margin: 0 auto;
+        }
+        .section-label {
+            font-size: 11px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--accent); margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: 'DM Serif Display', serif; font-size: 32px;
+            font-weight: 400; margin-bottom: 8px;
+        }
+        .section-desc { color: var(--text-dim); font-size: 15px; margin-bottom: 40px; max-width: 600px; }
+        .section-divider {
+            border: none; border-top: 1px solid var(--border);
+            margin: 0 40px;
+        }
+
+        /* ARCHITECTURE DIAGRAM */
+        .arch-diagram {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 48px;
+            margin-bottom: 48px; position: relative; overflow: hidden;
+        }
+        .arch-diagram::after {
+            content: ''; position: absolute; top: -50%; right: -20%; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(59,130,246,0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .arch-layers { display: flex; flex-direction: column; gap: 16px; position: relative; z-index: 1; }
+        .arch-layer {
+            display: flex; align-items: stretch; gap: 12px;
+        }
+        .arch-layer-label {
+            width: 140px; min-width: 140px;
+            display: flex; align-items: center; justify-content: flex-end;
+            padding-right: 16px;
+            font-size: 11px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 1.5px; color: var(--text-muted);
+            border-right: 2px solid var(--border);
+        }
+        .arch-layer-items {
+            flex: 1; display: flex; flex-wrap: wrap; gap: 8px;
+            padding: 8px 0 8px 16px;
+        }
+        .arch-item {
+            padding: 10px 16px; border-radius: var(--radius-sm);
+            font-size: 13px; font-weight: 500;
+            border: 1px solid; display: flex; align-items: center; gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .arch-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .arch-item .icon { font-size: 15px; }
+        .arch-item.blue { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.2); color: #93b5f8; }
+        .arch-item.green { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.2); color: #6ee7a0; }
+        .arch-item.purple { background: rgba(168,85,247,0.08); border-color: rgba(168,85,247,0.2); color: #c4a5f7; }
+        .arch-item.amber { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.2); color: #fbbf4e; }
+        .arch-item.cyan { background: rgba(6,182,212,0.08); border-color: rgba(6,182,212,0.2); color: #5eead4; }
+        .arch-item.red { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.2); color: #fca5a5; }
+        .arch-item.white { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); color: var(--text-dim); }
+
+        /* SERVICE GRID */
+        .service-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px;
+        }
+        .service-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 24px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .service-card:hover { border-color: var(--border-accent); transform: translateY(-2px); }
+        .service-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .service-card-name { font-weight: 600; font-size: 15px; }
+        .service-card-sku {
+            font-family: 'JetBrains Mono', monospace; font-size: 11px;
+            color: var(--text-muted); padding: 3px 8px; border-radius: 4px;
+            background: rgba(255,255,255,0.04);
+        }
+        .service-card-desc { color: var(--text-dim); font-size: 13px; line-height: 1.6; }
+        .service-card-tag {
+            display: inline-block; margin-top: 12px; font-size: 11px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px;
+            border-radius: 4px;
+        }
+        .tag-compute { background: rgba(59,130,246,0.1); color: #93b5f8; }
+        .tag-data { background: rgba(34,197,94,0.1); color: #6ee7a0; }
+        .tag-ai { background: rgba(168,85,247,0.1); color: #c4a5f7; }
+        .tag-security { background: rgba(239,68,68,0.1); color: #fca5a5; }
+        .tag-observability { background: rgba(245,158,11,0.1); color: #fbbf4e; }
+        .tag-storage { background: rgba(6,182,212,0.1); color: #5eead4; }
+
+        /* AI SECTION */
+        .ai-models {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .model-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 24px;
+            position: relative; overflow: hidden;
+        }
+        .model-card.primary {
+            border-color: rgba(168,85,247,0.3);
+            background: linear-gradient(135deg, rgba(168,85,247,0.05) 0%, var(--bg-card) 100%);
+        }
+        .model-card.primary::before {
+            content: 'PRIMARY'; position: absolute; top: 12px; right: 12px;
+            font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+            padding: 3px 8px; border-radius: 4px;
+            background: rgba(168,85,247,0.15); color: var(--accent-purple);
+        }
+        .model-card.fallback::before {
+            content: 'FALLBACK'; position: absolute; top: 12px; right: 12px;
+            font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+            padding: 3px 8px; border-radius: 4px;
+            background: rgba(59,130,246,0.1); color: var(--accent);
+        }
+        .model-card.emergency::before {
+            content: 'EMERGENCY'; position: absolute; top: 12px; right: 12px;
+            font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+            padding: 3px 8px; border-radius: 4px;
+            background: rgba(245,158,11,0.1); color: var(--accent-amber);
+        }
+        .model-card.embed::before {
+            content: 'EMBEDDINGS'; position: absolute; top: 12px; right: 12px;
+            font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+            padding: 3px 8px; border-radius: 4px;
+            background: rgba(6,182,212,0.1); color: var(--accent-cyan);
+        }
+        .model-name { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+        .model-base { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+        .model-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+        /* FAILOVER DIAGRAM */
+        .failover {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 40px; margin-bottom: 48px;
+        }
+        .failover-title { font-weight: 600; font-size: 16px; margin-bottom: 24px; text-align: center; }
+        .failover-chain { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; }
+        .failover-node {
+            padding: 16px 24px; border-radius: var(--radius-sm);
+            text-align: center; min-width: 180px;
+        }
+        .failover-node.tier1 { background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.3); }
+        .failover-node.tier2 { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); }
+        .failover-node.tier3 { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); }
+        .failover-node-label {
+            font-size: 10px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 6px;
+        }
+        .failover-node.tier1 .failover-node-label { color: var(--accent-purple); }
+        .failover-node.tier2 .failover-node-label { color: var(--accent); }
+        .failover-node.tier3 .failover-node-label { color: var(--accent-amber); }
+        .failover-node-name { font-weight: 600; font-size: 14px; }
+        .failover-node-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+        .failover-arrow {
+            color: var(--text-muted); font-size: 20px; padding: 0 12px;
+            display: flex; align-items: center;
+        }
+
+        /* STATS ROW */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px; margin-bottom: 48px;
+        }
+        .stat-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 24px; text-align: center;
+        }
+        .stat-value {
+            font-family: 'DM Serif Display', serif; font-size: 36px;
+            color: var(--text); margin-bottom: 4px;
+        }
+        .stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+
+        /* SECURITY */
+        .security-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .security-item {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 20px;
+            display: flex; gap: 14px; align-items: flex-start;
+        }
+        .security-icon {
+            width: 36px; height: 36px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; flex-shrink: 0;
+        }
+        .security-icon.green { background: rgba(34,197,94,0.1); }
+        .security-icon.red { background: rgba(239,68,68,0.1); }
+        .security-icon.amber { background: rgba(245,158,11,0.1); }
+        .security-icon.blue { background: rgba(59,130,246,0.1); }
+        .security-item-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+        .security-item-desc { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+
+        /* PATENT */
+        .patent-banner {
+            background: linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgba(168,85,247,0.06) 100%);
+            border: 1px solid rgba(59,130,246,0.15);
+            border-radius: var(--radius-lg); padding: 40px;
+            display: flex; align-items: center; gap: 32px;
+            margin-bottom: 48px;
+        }
+        .patent-icon {
+            width: 64px; height: 64px; border-radius: 16px;
+            background: rgba(59,130,246,0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; flex-shrink: 0;
+        }
+        .patent-title { font-weight: 700; font-size: 18px; margin-bottom: 4px; }
+        .patent-number {
+            font-family: 'JetBrains Mono', monospace; font-size: 13px;
+            color: var(--accent); margin-bottom: 8px;
+        }
+        .patent-desc { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+
+        /* FOOTER */
+        footer {
+            padding: 40px; border-top: 1px solid var(--border);
+            text-align: center; color: var(--text-muted); font-size: 13px;
+        }
+        footer a { color: var(--text-dim); text-decoration: none; }
+        footer a:hover { color: var(--text); }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav { padding: 12px 20px; }
+            .nav-links { display: none; }
+            .hero { padding: 60px 20px 40px; }
+            .hero h1 { font-size: 32px; }
+            .section { padding: 40px 20px; }
+            .arch-layer { flex-direction: column; }
+            .arch-layer-label { width: 100%; justify-content: flex-start; padding: 0 0 8px 0; border-right: none; border-bottom: 1px solid var(--border); }
+            .arch-layer-items { padding: 8px 0; }
+            .service-grid { grid-template-columns: 1fr; }
+            .failover-chain { flex-direction: column; }
+            .failover-arrow { transform: rotate(90deg); padding: 8px 0; }
+            .patent-banner { flex-direction: column; text-align: center; }
+            .gate-box { padding: 32px 24px; margin: 0 20px; }
+            .gate-input-wrap { flex-direction: column; }
+        }
+
+        /* ANIMATIONS */
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div class="gate-overlay" id="gate">
+    <div class="gate-box">
+        <img src="logo.png" alt="HNTR AI">
+        <h2>Platform Architecture</h2>
+        <p>This document contains proprietary technical details about HNTR AI's infrastructure, AI models, and security posture. Enter the access code to continue.</p>
+        <div class="gate-input-wrap">
+            <input type="password" class="gate-input" id="gate-password" placeholder="Access code" autocomplete="off">
+            <button class="gate-btn" id="gate-submit">Unlock</button>
+        </div>
+        <div class="gate-error" id="gate-error"></div>
+        <div class="gate-footer">Contact <a href="mailto:info@hntrai.com" style="color:var(--accent)">info@hntrai.com</a> to request access</div>
+    </div>
+</div>
+
+<!-- NAV -->
+<nav>
+    <a href="index.html" class="nav-logo">
+        <img src="logo.png" alt="HNTR AI">
+        <span>HNTR AI</span>
+    </a>
+    <div class="nav-links">
+        <a href="product.html">Platform</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <span class="nav-badge">Confidential</span>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT (hidden until unlocked) -->
+<div class="content" id="content">
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-badge">Production Environment — Live</div>
+        <h1>Platform Architecture</h1>
+        <p>Enterprise-grade AI infrastructure built on Microsoft Azure. 13 production services, multi-model failover, SOC 2-ready security posture.</p>
+        <div class="hero-meta">
+            <div class="hero-meta-item"><span class="dot"></span>130,000+ lines of production code</div>
+            <div class="hero-meta-item"><span class="dot"></span>44 data models</div>
+            <div class="hero-meta-item"><span class="dot"></span>187+ API routes</div>
+            <div class="hero-meta-item"><span class="dot"></span>Patent pending</div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- STATS -->
+    <section class="section">
+        <div class="stats-row reveal">
+            <div class="stat-card">
+                <div class="stat-value">13</div>
+                <div class="stat-label">Azure Services</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">4</div>
+                <div class="stat-label">AI Models Deployed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Failover Tiers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">99.9%</div>
+                <div class="stat-label">Target Uptime</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">&lt;3s</div>
+                <div class="stat-label">AI Response Time</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARCHITECTURE DIAGRAM -->
+    <section class="section">
+        <div class="section-label">System Architecture</div>
+        <div class="section-title">Full Stack Overview</div>
+        <div class="section-desc">Multi-layer architecture from edge delivery to AI intelligence, all running on Azure.</div>
+
+        <div class="arch-diagram reveal">
+            <div class="arch-layers">
+                <div class="arch-layer">
+                    <div class="arch-layer-label">Edge</div>
+                    <div class="arch-layer-items">
+                        <div class="arch-item cyan"><span class="icon">🌐</span> Azure Front Door (CDN + DDoS)</div>
+                        <div class="arch-item cyan"><span class="icon">📱</span> iOS App (TestFlight)</div>
+                        <div class="arch-item cyan"><span class="icon">💻</span> Web App (Next.js 14)</div>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <div class="arch-layer-label">Compute</div>
+                    <div class="arch-layer-items">
+                        <div class="arch-item blue"><span class="icon">⚡</span> App Service P3v3 (32GB / 4 vCPU)</div>
+                        <div class="arch-item blue"><span class="icon">🔄</span> Staging Deployment Slot</div>
+                        <div class="arch-item blue"><span class="icon">📦</span> Container Registry</div>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <div class="arch-layer-label">AI / ML</div>
+                    <div class="arch-layer-items">
+                        <div class="arch-item purple"><span class="icon">🧠</span> Fine-Tuned Cognitive OS</div>
+                        <div class="arch-item purple"><span class="icon">🤖</span> GPT-4o</div>
+                        <div class="arch-item purple"><span class="icon">⚙️</span> GPT-4o-mini</div>
+                        <div class="arch-item purple"><span class="icon">🔍</span> text-embedding-3-large</div>
+                        <div class="arch-item purple"><span class="icon">🔎</span> AI Search (S1)</div>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <div class="arch-layer-label">Data</div>
+                    <div class="arch-layer-items">
+                        <div class="arch-item green"><span class="icon">🗄️</span> PostgreSQL D4ds_v5 (16GB)</div>
+                        <div class="arch-item green"><span class="icon">⚡</span> Redis Cache (Standard C1)</div>
+                        <div class="arch-item green"><span class="icon">📁</span> Blob Storage</div>
+                        <div class="arch-item green"><span class="icon">🔑</span> Key Vault</div>
+                    </div>
+                </div>
+                <div class="arch-layer">
+                    <div class="arch-layer-label">Security</div>
+                    <div class="arch-layer-items">
+                        <div class="arch-item red"><span class="icon">🛡️</span> Defender for Cloud</div>
+                        <div class="arch-item red"><span class="icon">🔍</span> Microsoft Sentinel (SIEM)</div>
+                        <div class="arch-item red"><span class="icon">📋</span> Microsoft Purview</div>
+                        <div class="arch-item amber"><span class="icon">📊</span> Application Insights</div>
+                        <div class="arch-item amber"><span class="icon">📝</span> Log Analytics (90-day)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- AI MODELS -->
+    <section class="section">
+        <div class="section-label">AI Intelligence Layer</div>
+        <div class="section-title">Multi-Model Architecture with Automatic Failover</div>
+        <div class="section-desc">Proprietary fine-tuned model as primary, with cascading fallback to base models. Zero single points of failure.</div>
+
+        <div class="failover reveal">
+            <div class="failover-title">Request Failover Chain</div>
+            <div class="failover-chain">
+                <div class="failover-node tier1">
+                    <div class="failover-node-label">Tier 1 — Primary</div>
+                    <div class="failover-node-name">Cognitive OS</div>
+                    <div class="failover-node-desc">Fine-tuned GPT-4.1-mini<br>~1.5s · $0.002/req</div>
+                </div>
+                <div class="failover-arrow">→</div>
+                <div class="failover-node tier2">
+                    <div class="failover-node-label">Tier 2 — Fallback</div>
+                    <div class="failover-node-name">Current Pipeline</div>
+                    <div class="failover-node-desc">GPT-4o-mini + full prompt<br>~4s · $0.015/req</div>
+                </div>
+                <div class="failover-arrow">→</div>
+                <div class="failover-node tier3">
+                    <div class="failover-node-label">Tier 3 — Emergency</div>
+                    <div class="failover-node-name">GPT-4o</div>
+                    <div class="failover-node-desc">Full capability model<br>~6s · $0.035/req</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-models reveal">
+            <div class="model-card primary">
+                <div class="model-name">HNTR Cognitive OS</div>
+                <div class="model-base">gpt-4.1-mini (fine-tuned)</div>
+                <div class="model-desc">Proprietary model trained on 200+ examples of HNTR recruiting methodology across 8 categories. Recruiting intelligence embedded in model weights — not prompts. Single-pass JSON generation with deterministic validation.</div>
+            </div>
+            <div class="model-card fallback">
+                <div class="model-name">GPT-4o-mini</div>
+                <div class="model-base">gpt-4o-mini-2024-07-18</div>
+                <div class="model-desc">Cost-efficient base model with full Cognitive OS system prompt. Serves as production fallback with proven pipeline. Handles bulk operations and quick evaluations.</div>
+            </div>
+            <div class="model-card emergency">
+                <div class="model-name">GPT-4o</div>
+                <div class="model-base">gpt-4o-2024-11-20</div>
+                <div class="model-desc">Maximum capability model for complex reasoning tasks. Emergency failover ensures zero downtime even during model deployment updates.</div>
+            </div>
+            <div class="model-card embed">
+                <div class="model-name">text-embedding-3-large</div>
+                <div class="model-base">text-embedding-3-large v1</div>
+                <div class="model-desc">Semantic vector embeddings for advisor search, firm intelligence matching, and natural language queries. Powers Azure AI Search indexes.</div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- AZURE SERVICES -->
+    <section class="section">
+        <div class="section-label">Infrastructure</div>
+        <div class="section-title">Azure Service Inventory</div>
+        <div class="section-desc">13 production Azure services providing enterprise-grade compute, data, AI, security, and observability.</div>
+
+        <div class="service-grid reveal">
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">⚡ App Service</div>
+                    <div class="service-card-sku">P3v3</div>
+                </div>
+                <div class="service-card-desc">Production web application hosting. 32GB RAM, 4 vCPU. Runs Next.js 14 with App Router, server-side rendering, and API routes. Staging deployment slot for zero-downtime deploys.</div>
+                <span class="service-card-tag tag-compute">Compute</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">🗄️ PostgreSQL Flexible Server</div>
+                    <div class="service-card-sku">D4ds_v5</div>
+                </div>
+                <div class="service-card-desc">Enterprise relational database. 4 vCores, 16GB RAM, 64GB storage with autogrow. 44 Prisma models across advisors, firms, scoring, pipelines, tenants, and intelligence data.</div>
+                <span class="service-card-tag tag-data">Data</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">🧠 Azure OpenAI</div>
+                    <div class="service-card-sku">4 Deployments</div>
+                </div>
+                <div class="service-card-desc">Four model deployments: proprietary fine-tuned Cognitive OS, GPT-4o (50K TPM), GPT-4o-mini, and text-embedding-3-large. Multi-tier failover architecture.</div>
+                <span class="service-card-tag tag-ai">AI / ML</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">🔍 AI Search</div>
+                    <div class="service-card-sku">Standard S1</div>
+                </div>
+                <div class="service-card-desc">Semantic search across advisor profiles, firm intelligence, and behavioral signals. 25GB storage, 36 indexes. Natural language queries powered by embedding vectors.</div>
+                <span class="service-card-tag tag-ai">AI / ML</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">⚡ Redis Cache</div>
+                    <div class="service-card-sku">Standard C1</div>
+                </div>
+                <div class="service-card-desc">In-memory caching for published firm models, scoring results, pipeline data, and AI response caching. Sub-50ms cache hits eliminate redundant compute.</div>
+                <span class="service-card-tag tag-data">Data</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">📁 Blob Storage</div>
+                    <div class="service-card-sku">Standard LRS</div>
+                </div>
+                <div class="service-card-desc">Object storage for generated playbooks, export archives, roster uploads, and document management. Organized by tenant for multi-tenant isolation.</div>
+                <span class="service-card-tag tag-storage">Storage</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">🌐 Azure Front Door</div>
+                    <div class="service-card-sku">Standard</div>
+                </div>
+                <div class="service-card-desc">Global CDN with DDoS protection, edge caching, SSL termination, and intelligent routing. Enterprise-grade delivery layer for the web application and APIs.</div>
+                <span class="service-card-tag tag-compute">Compute</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">📦 Container Registry</div>
+                    <div class="service-card-sku">Basic</div>
+                </div>
+                <div class="service-card-desc">Private Docker container registry for CI/CD pipeline. Build, store, and deploy container images with automated vulnerability scanning.</div>
+                <span class="service-card-tag tag-compute">Compute</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">🔑 Key Vault</div>
+                    <div class="service-card-sku">Standard</div>
+                </div>
+                <div class="service-card-desc">Centralized secrets management for API keys, database credentials, encryption keys, and certificates. Hardware-backed security with audit logging.</div>
+                <span class="service-card-tag tag-security">Security</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">🛡️ Defender for Cloud</div>
+                    <div class="service-card-sku">All Plans</div>
+                </div>
+                <div class="service-card-desc">Unified security management across all resources. Threat detection for servers, databases, storage, containers, AI services, Key Vault, and APIs. Continuous vulnerability assessment.</div>
+                <span class="service-card-tag tag-security">Security</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">🔍 Microsoft Sentinel</div>
+                    <div class="service-card-sku">SIEM</div>
+                </div>
+                <div class="service-card-desc">Cloud-native security information and event management. Threat detection, investigation, and automated response across the entire environment. SOC 2 audit trail.</div>
+                <span class="service-card-tag tag-security">Security</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">📋 Microsoft Purview</div>
+                    <div class="service-card-sku">Governance</div>
+                </div>
+                <div class="service-card-desc">Unified data governance and compliance. Sensitive data discovery, classification, and policy enforcement. Regulatory compliance management for financial services.</div>
+                <span class="service-card-tag tag-security">Security</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">📊 Application Insights</div>
+                    <div class="service-card-sku">Workspace-Based</div>
+                </div>
+                <div class="service-card-desc">Real-time application performance monitoring, error tracking, dependency tracing, and custom telemetry. 90-day log retention with Log Analytics integration.</div>
+                <span class="service-card-tag tag-observability">Observability</span>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- SECURITY -->
+    <section class="section">
+        <div class="section-label">Security & Compliance</div>
+        <div class="section-title">SOC 2 Type II Ready</div>
+        <div class="section-desc">Enterprise security posture designed for wealth management compliance requirements.</div>
+
+        <div class="security-grid reveal">
+            <div class="security-item">
+                <div class="security-icon green">🔒</div>
+                <div>
+                    <div class="security-item-title">Encryption at Rest & Transit</div>
+                    <div class="security-item-desc">TLS 1.2+ for all connections. AES-256 encryption for stored data. Azure-managed keys with Key Vault integration.</div>
+                </div>
+            </div>
+            <div class="security-item">
+                <div class="security-icon blue">👤</div>
+                <div>
+                    <div class="security-item-title">Entra ID SSO</div>
+                    <div class="security-item-desc">Enterprise single sign-on with PKCE flow. RBAC with 7 role levels from Platform Admin to Read-Only Viewer.</div>
+                </div>
+            </div>
+            <div class="security-item">
+                <div class="security-icon red">🛡️</div>
+                <div>
+                    <div class="security-item-title">Threat Detection</div>
+                    <div class="security-item-desc">Microsoft Defender across all resource types. Sentinel SIEM for automated threat investigation and response.</div>
+                </div>
+            </div>
+            <div class="security-item">
+                <div class="security-icon amber">📋</div>
+                <div>
+                    <div class="security-item-title">Data Governance</div>
+                    <div class="security-item-desc">Microsoft Purview for sensitive data classification, policy enforcement, and regulatory compliance tracking.</div>
+                </div>
+            </div>
+            <div class="security-item">
+                <div class="security-icon green">🏢</div>
+                <div>
+                    <div class="security-item-title">Multi-Tenant Isolation</div>
+                    <div class="security-item-desc">Complete tenant data isolation at the database level. Row-level security policies prevent cross-tenant data access.</div>
+                </div>
+            </div>
+            <div class="security-item">
+                <div class="security-icon blue">📝</div>
+                <div>
+                    <div class="security-item-title">Audit Logging</div>
+                    <div class="security-item-desc">90-day log retention across two Log Analytics workspaces. Full audit trail for compliance reporting and incident investigation.</div>
+                </div>
+            </div>
+            <div class="security-item">
+                <div class="security-icon red">🤖</div>
+                <div>
+                    <div class="security-item-title">AI Model Privacy</div>
+                    <div class="security-item-desc">Fine-tuned model is private to our Azure subscription. Training data never used to improve base models. No data shared with OpenAI.</div>
+                </div>
+            </div>
+            <div class="security-item">
+                <div class="security-icon amber">🌐</div>
+                <div>
+                    <div class="security-item-title">DDoS Protection</div>
+                    <div class="security-item-desc">Azure Front Door with built-in DDoS protection, WAF capabilities, and edge-level security filtering.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- PATENT -->
+    <section class="section">
+        <div class="patent-banner reveal">
+            <div class="patent-icon">📜</div>
+            <div>
+                <div class="patent-title">Patent-Pending Technology</div>
+                <div class="patent-number">Provisional Patent #63/959,467 · Filed January 13, 2026</div>
+                <div class="patent-desc">Communication intelligence system encompassing the Cognitive OS architecture, behavioral signal processing, multi-model orchestration, and proprietary scoring algorithms (FIT, BLIX, SIGNAL, WATCH). Non-provisional filing due January 13, 2027.</div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- PROPRIETARY MODULES -->
+    <section class="section">
+        <div class="section-label">Proprietary Intelligence</div>
+        <div class="section-title">Four Scoring Engines</div>
+        <div class="section-desc">Each algorithm independently evaluates a different dimension of advisor-firm compatibility and transition probability.</div>
+
+        <div class="service-grid reveal">
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">🎯 HNTR Fit™</div>
+                    <div class="service-card-sku">22 Features</div>
+                </div>
+                <div class="service-card-desc">Firm Analyzer algorithm scoring advisor-firm compatibility across production, business model, culture, compensation structure, and growth trajectory. 22-feature weighted scoring system with configurable firm DNA models.</div>
+                <span class="service-card-tag tag-ai">Scoring</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">🔥 BLIX™ Index</div>
+                    <div class="service-card-sku">Patent Pending</div>
+                </div>
+                <div class="service-card-desc">Breakaway Likelihood Index analyzing lifestyle signals, career triggers, compensation events, and sentiment indicators to predict advisor transition probability before competitors detect movement.</div>
+                <span class="service-card-tag tag-ai">Scoring</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">📡 HNTR Signal™</div>
+                    <div class="service-card-sku">Patent Pending</div>
+                </div>
+                <div class="service-card-desc">Strategic visibility and passive brand familiarity engine. Builds pre-outreach awareness with target advisors through intelligent touchpoint orchestration.</div>
+                <span class="service-card-tag tag-ai">Engagement</span>
+            </div>
+            <div class="service-card">
+                <div class="service-card-header">
+                    <div class="service-card-name">⚡ HNTR Watch™</div>
+                    <div class="service-card-sku">Patent Pending</div>
+                </div>
+                <div class="service-card-desc">Real-time behavioral monitoring for advisor activity patterns, engagement signals, and trigger events. Automated alerts when timing indicators align for recruiter outreach.</div>
+                <span class="service-card-tag tag-ai">Intelligence</span>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- CTA -->
+    <section class="section" style="text-align:center; padding: 80px 40px;">
+        <div class="section-title reveal" style="margin-bottom: 16px;">Ready to see it in action?</div>
+        <p style="color: var(--text-dim); font-size: 16px; margin-bottom: 32px;" class="reveal">Schedule a live demonstration of the platform and discuss partnership opportunities.</p>
+        <a href="mailto:info@hntrai.com" class="gate-btn reveal" style="display:inline-block; text-decoration:none; padding: 14px 32px; font-size: 15px;">Request Demo →</a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 HNTR AI. All rights reserved. This document is confidential and intended solely for the recipient.</p>
+        <p style="margin-top:8px;"><a href="index.html">Home</a> · <a href="product.html">Platform</a> · <a href="contact.html">Contact</a></p>
+    </footer>
+</div>
+
+<script>
+    // PASSWORD GATE
+    // Simple hash-based gate - not military-grade security, just a speed bump
+    const VALID_CODES = ['hntr2026', 'azure2026', 'futureproof', 'firstrate'];
+    const gate = document.getElementById('gate');
+    const content = document.getElementById('content');
+    const passwordInput = document.getElementById('gate-password');
+    const errorEl = document.getElementById('gate-error');
+
+    // Check if already authenticated this session
+    if (sessionStorage.getItem('hntr_arch_auth') === 'true') {
+        gate.classList.add('hidden');
+        content.classList.add('visible');
+    }
+
+    document.getElementById('gate-submit').addEventListener('click', tryUnlock);
+    passwordInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryUnlock(); });
+
+    function tryUnlock() {
+        const code = passwordInput.value.trim().toLowerCase();
+        if (VALID_CODES.includes(code)) {
+            sessionStorage.setItem('hntr_arch_auth', 'true');
+            gate.classList.add('hidden');
+            setTimeout(() => content.classList.add('visible'), 100);
+            errorEl.textContent = '';
+        } else {
+            errorEl.textContent = 'Invalid access code. Contact info@hntrai.com for access.';
+            passwordInput.value = '';
+            passwordInput.focus();
+        }
+    }
+
+    // SCROLL REVEAL
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => entry.target.classList.add('visible'), i * 80);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — HNTR AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0c1d27;--navy-deep:#081419;--slate:#2f495a;--slate-light:#3d5d71;--silver:#6d7d8d;--silver-light:#94a3b3;--ice:#c8d3dc;--surface:#fff;--surface-dim:#f4f6f8;--surface-warm:#f8fafb;--border:#dfe4ea;--border-light:#edf0f4;--accent-glow:rgba(47,73,90,.12);--radius:12px;--radius-lg:20px;--font-display:'Instrument Serif',Georgia,serif;--font-body:'DM Sans',system-ui,sans-serif}*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:var(--font-body);color:var(--navy);background:var(--surface);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border-light);transition:box-shadow .3s}nav.scrolled{box-shadow:0 1px 16px rgba(12,29,39,.06)}.nav-inner{max-width:1200px;margin:0 auto;padding:0 32px;height:72px;display:flex;align-items:center;justify-content:space-between}.logo-link{display:flex;align-items:center;text-decoration:none}.logo-link img{height:40px;width:auto}.nav-links{display:flex;align-items:center;gap:36px;list-style:none}.nav-links a{font-size:14px;font-weight:500;color:var(--silver);text-decoration:none;transition:color .2s}.nav-links a:hover,.nav-links a.active{color:var(--navy)}.nav-cta{background:var(--navy)!important;color:#fff!important;padding:10px 24px!important;border-radius:8px;font-size:14px!important;font-weight:600!important;transition:all .2s!important}.nav-cta:hover{background:var(--slate)!important;transform:translateY(-1px)}.nav-toggle{display:none;background:none;border:none;cursor:pointer;width:32px;height:32px;position:relative}.nav-toggle span{display:block;width:20px;height:2px;background:var(--navy);position:absolute;left:6px;transition:.3s}.nav-toggle span:nth-child(1){top:9px}.nav-toggle span:nth-child(2){top:15px}.nav-toggle span:nth-child(3){top:21px}
+section{padding:120px 32px}.container{max-width:1200px;margin:0 auto}.section-label{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--slate);margin-bottom:16px}.section-title{font-family:var(--font-display);font-size:clamp(32px,4vw,48px);line-height:1.15;letter-spacing:-.03em;color:var(--navy);margin-bottom:20px}
+
+.page-hero{padding-top:160px;padding-bottom:60px;text-align:center;position:relative;overflow:hidden}.page-hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(circle,rgba(47,73,90,.05) 0%,transparent 65%);pointer-events:none}.page-hero h1{font-family:var(--font-display);font-size:clamp(40px,5vw,64px);line-height:1.1;letter-spacing:-.03em;color:var(--navy);margin-bottom:20px}.page-hero h1 em{font-style:italic;color:var(--slate)}.page-hero p{font-size:18px;color:var(--silver);max-width:560px;margin:0 auto;line-height:1.7}
+
+/* Contact layout */
+.contact-section{padding-top:40px}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+
+/* Form */
+.contact-form{background:var(--surface-dim);border:1px solid var(--border);border-radius:var(--radius-lg);padding:48px}
+.form-group{margin-bottom:24px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px;letter-spacing:-.01em}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;font-family:var(--font-body);color:var(--navy);background:#fff;transition:border-color .2s,box-shadow .2s;outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--slate);box-shadow:0 0 0 3px var(--accent-glow)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--silver-light)}
+.form-group textarea{resize:vertical;min-height:120px}
+.form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236d7d8d'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:20px;padding-right:40px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.btn-submit{background:var(--navy);color:#fff;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:600;border:none;cursor:pointer;width:100%;transition:all .2s;font-family:var(--font-body)}.btn-submit:hover{background:var(--slate);transform:translateY(-1px);box-shadow:0 6px 20px rgba(12,29,39,.15)}
+
+/* Info side */
+.contact-info h3{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:8px;letter-spacing:-.01em}.contact-info>p{font-size:16px;color:var(--silver);line-height:1.7;margin-bottom:40px}
+.info-cards{display:flex;flex-direction:column;gap:16px}
+.info-card{display:flex;align-items:flex-start;gap:16px;padding:20px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-warm);transition:all .3s}.info-card:hover{border-color:var(--slate);box-shadow:0 4px 12px var(--accent-glow)}
+.info-card-icon{width:44px;height:44px;border-radius:10px;background:rgba(47,73,90,.08);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.info-card-content h4{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.info-card-content p{font-size:14px;color:var(--silver);line-height:1.6}
+.info-card-content a{color:var(--slate);font-weight:600;text-decoration:none}.info-card-content a:hover{text-decoration:underline}
+
+/* FAQ */
+.faq{background:var(--surface-dim);border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light)}.faq-grid{max-width:760px;margin:48px auto 0}.faq-item{border-bottom:1px solid var(--border);padding:24px 0}.faq-item:last-child{border-bottom:none}.faq-item h4{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px;cursor:pointer}.faq-item p{font-size:15px;color:var(--silver);line-height:1.65}
+
+footer{background:var(--navy-deep);color:#fff;padding:64px 32px 40px}.footer-inner{max-width:1200px;margin:0 auto}.footer-top{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08)}.footer-brand-logo{height:32px;width:auto;filter:brightness(0) invert(1) brightness(.7);margin-bottom:12px}.footer-brand p{font-size:14px;color:rgba(255,255,255,.4);line-height:1.7;max-width:280px}.footer-col h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.3);margin-bottom:20px}.footer-col a{display:block;font-size:14px;color:rgba(255,255,255,.6);text-decoration:none;padding:4px 0;transition:color .2s}.footer-col a:hover{color:#fff}.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:32px;font-size:13px;color:rgba(255,255,255,.25)}.footer-bottom a{color:rgba(255,255,255,.25);text-decoration:none;margin-left:24px;transition:color .2s}.footer-bottom a:hover{color:rgba(255,255,255,.5)}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:960px){.contact-grid{grid-template-columns:1fr;gap:48px}.footer-top{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){section{padding:80px 20px}.nav-links{display:none}.nav-toggle{display:block}.nav-links.open{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:#fff;padding:24px 32px;border-bottom:1px solid var(--border);gap:16px}.form-row{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.page-hero h1{font-size:36px}}
+</style>
+</head>
+<body>
+
+<nav id="nav"><div class="nav-inner"><a href="index.html" class="logo-link"><img src="logo.png" alt="HNTR AI"></a><button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></button><ul class="nav-links"><li><a href="product.html">Platform</a></li><li><a href="about.html">About</a></li><li><a href="contact.html" class="active">Contact</a></li><li><a href="contact.html" class="nav-cta">Request Demo</a></li></ul></div></nav>
+
+<section class="page-hero">
+<div class="container">
+<h1>Let&rsquo;s <em>talk</em></h1>
+<p>Whether you&rsquo;re a firm exploring smarter recruiting, a potential partner, or an investor &mdash; we&rsquo;d love to hear from you.</p>
+</div>
+</section>
+
+<section class="contact-section"><div class="container"><div class="contact-grid">
+
+<form class="contact-form reveal" action="https://formspree.io/f/mwplrewg" method="POST">
+<div class="form-group"><label>Full Name</label><input type="text" name="name" placeholder="John Smith" required></div>
+<div class="form-row">
+<div class="form-group"><label>Email</label><input type="email" name="email" placeholder="john@firm.com" required></div>
+<div class="form-group"><label>Phone</label><input type="tel" name="phone" placeholder="(555) 000-0000"></div>
+</div>
+<div class="form-group"><label>Company</label><input type="text" name="company" placeholder="Your firm name"></div>
+<div class="form-group"><label>I am a...</label>
+<select name="role">
+<option value="" disabled selected>Select your role</option>
+<option>Recruiting Leader</option>
+<option>Head of Business Development</option>
+<option>C-Suite / Executive</option>
+<option>Operations / Strategy</option>
+<option>Investor / Partner</option>
+<option>Other</option>
+</select>
+</div>
+<div class="form-group"><label>How can we help?</label>
+<select name="interest">
+<option value="" disabled selected>Select your interest</option>
+<option>Request a demo</option>
+<option>Early access program</option>
+<option>Partnership inquiry</option>
+<option>Investment inquiry</option>
+<option>General question</option>
+</select>
+</div>
+<div class="form-group"><label>Message</label><textarea name="message" placeholder="Tell us about your recruiting challenges or what you'd like to learn about HNTR AI..."></textarea></div>
+<input type="hidden" name="_next" value="https://hntrai.com/contact.html">
+<button type="submit" class="btn-submit">Send Message &rarr;</button>
+</form>
+
+<div class="contact-info reveal">
+<h3>Get in touch directly</h3>
+<p>Prefer a direct line? Reach out via email and we&rsquo;ll respond within one business day.</p>
+<div class="info-cards">
+<div class="info-card">
+<div class="info-card-icon">&#x2709;</div>
+<div class="info-card-content"><h4>Email</h4><p><a href="mailto:info@hntrai.com">info@hntrai.com</a></p></div>
+</div>
+<div class="info-card">
+<div class="info-card-icon">&#x1F4CD;</div>
+<div class="info-card-content"><h4>Location</h4><p>San Antonio, Texas<br>Operating Nationally</p></div>
+</div>
+<div class="info-card">
+<div class="info-card-icon">&#x1F517;</div>
+<div class="info-card-content"><h4>LinkedIn</h4><p><a href="https://www.linkedin.com/in/paulcardenas/" target="_blank">Connect with Paul Cardenas</a></p></div>
+</div>
+<div class="info-card">
+<div class="info-card-icon">&#x1F4C5;</div>
+<div class="info-card-content"><h4>Schedule a Call</h4><p><a href="https://calendly.com/paul-cardenas-hntrai/15-min-quick-connect" target="_blank">Book a call</a> to discuss your recruiting challenges and see HNTR AI in action.</p></div>
+</div>
+</div>
+</div>
+
+</div></div></section>
+
+<section class="faq"><div class="container">
+<div class="section-label reveal">FAQ</div>
+<h2 class="section-title reveal">Common questions</h2>
+<div class="faq-grid reveal">
+<div class="faq-item"><h4>Who is HNTR AI built for?</h4><p>HNTR AI is purpose-built for wealth management firms &mdash; broker-dealers, RIAs, wirehouses, and wealth platforms &mdash; that recruit financial advisors. If your firm spends time and money trying to attract, evaluate, or retain top advisor talent, HNTR AI was built for you.</p></div>
+<div class="faq-item"><h4>How is this different from a CRM or recruiting ATS?</h4><p>CRMs and ATS systems manage your pipeline after you have one. HNTR AI works upstream &mdash; identifying who to target, when to reach out, and whether they&rsquo;re actually a good fit. We complement your existing tools, not replace them.</p></div>
+<div class="faq-item"><h4>What does &ldquo;patent pending&rdquo; mean?</h4><p>We&rsquo;ve filed provisional patents on our core technology, including advisor breakaway prediction (BLIX&trade;), recruiting funnel intelligence, and lifestyle-based compatibility scoring. These filings protect the proprietary methods that power the platform.</p></div>
+<div class="faq-item"><h4>Is my data secure?</h4><p>Yes. HNTR AI is built with enterprise-grade security standards in mind, with compliance guardrails for FINRA, SEC, and state-level recruiting regulations baked into the architecture.</p></div>
+<div class="faq-item"><h4>How do I get started?</h4><p>Fill out the form above or email <a href="mailto:info@hntrai.com" style="color:var(--slate);font-weight:600;text-decoration:none">info@hntrai.com</a>. We&rsquo;ll schedule a conversation to understand your recruiting needs and show you how HNTR AI can help.</p></div>
+</div>
+</div></section>
+
+<footer><div class="footer-inner"><div class="footer-top">
+<div class="footer-brand"><img src="logo.png" alt="HNTR AI" class="footer-brand-logo"><p>Recruiting intelligence for wealth management.</p></div>
+<div class="footer-col"><h4>Platform</h4><a href="product.html#signal">HNTR Signal&trade;</a><a href="product.html#watch">HNTR Watch&trade;</a><a href="product.html#fit">HNTR Fit&trade;</a><a href="product.html#blix">BLIX&trade; Index</a></div>
+<div class="footer-col"><h4>Company</h4><a href="about.html">About</a><a href="about.html#founder">Founder</a><a href="contact.html">Contact</a></div>
+<div class="footer-col"><h4>Legal</h4><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Patent Notice</a></div>
+</div><div class="footer-bottom"><span>&copy; 2026 HNTR AI. All rights reserved.</span><div><a href="https://www.linkedin.com/in/paulcardenas" target="_blank">LinkedIn</a></div></div></div></footer>
+
+<script>
+window.addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20)});
+var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting)entry.target.classList.add('visible')})},{threshold:0.1,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(function(el){observer.observe(el)});
+</script>
+</body>
+</html>
