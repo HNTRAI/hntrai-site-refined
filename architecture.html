@@ -10,22 +10,22 @@
     <style>
         :root {
             --bg: #ffffff;
-            --bg-card: #f8f9fb;
-            --bg-card-hover: #f1f3f7;
-            --bg-gate: #f4f5f7;
-            --border: #e2e5eb;
-            --border-accent: #cbd0da;
-            --text: #111827;
-            --text-dim: #4b5563;
-            --text-muted: #9ca3af;
-            --accent: #3b82f6;
-            --accent-glow: rgba(59, 130, 246, 0.1);
+            --bg-card: #f0ece5;
+            --bg-card-hover: rgba(106,123,140,.1);
+            --bg-gate: #f0ece5;
+            --border: rgba(106,123,140,.2);
+            --border-accent: rgba(106,123,140,.3);
+            --text: #101e2c;
+            --text-dim: #6a7b8c;
+            --text-muted: #6a7b8c;
+            --accent: #101e2c;
+            --accent-glow: rgba(16,30,44,.1);
             --accent-green: #16a34a;
             --accent-amber: #d97706;
             --accent-red: #dc2626;
             --accent-purple: #7c3aed;
             --accent-cyan: #0891b2;
-            --navy: #1e293b;
+            --navy: #101e2c;
             --radius: 12px;
             --radius-sm: 8px;
             --radius-lg: 16px;
@@ -62,7 +62,7 @@
         .nav-badge {
             font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
             padding: 4px 10px; border-radius: 20px;
-            background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(59,130,246,0.2);
+            background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(16,30,44,0.2);
         }
 
         /* GATE */
@@ -99,7 +99,7 @@
             background: var(--accent); color: #fff; font-weight: 600; font-size: 14px;
             cursor: pointer; transition: all 0.2s; white-space: nowrap;
         }
-        .gate-btn:hover { background: #2563eb; transform: translateY(-1px); }
+        .gate-btn:hover { background: #6a7b8c; transform: translateY(-1px); }
         .gate-error {
             color: var(--accent-red); font-size: 13px; min-height: 20px;
             margin-top: 4px; transition: opacity 0.2s;
@@ -114,13 +114,13 @@
         .hero {
             padding: 80px 40px 60px;
             text-align: center;
-            background: linear-gradient(180deg, rgba(59,130,246,0.04) 0%, transparent 60%);
+            background: linear-gradient(180deg, rgba(16,30,44,0.04) 0%, transparent 60%);
             position: relative;
         }
         .hero::before {
             content: ''; position: absolute; top: 80px; left: 50%; transform: translateX(-50%);
             width: 600px; height: 600px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(16,30,44,0.06) 0%, transparent 70%);
             pointer-events: none;
         }
         .hero-badge {
@@ -176,7 +176,7 @@
         }
         .arch-diagram::after {
             content: ''; position: absolute; top: -50%; right: -20%; width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(16,30,44,0.05) 0%, transparent 70%);
             pointer-events: none;
         }
         .arch-layers { display: flex; flex-direction: column; gap: 16px; position: relative; z-index: 1; }
@@ -354,15 +354,15 @@
 
         /* PATENT */
         .patent-banner {
-            background: linear-gradient(135deg, rgba(59,130,246,0.04) 0%, rgba(124,58,237,0.04) 100%);
-            border: 1px solid rgba(59,130,246,0.15);
+            background: linear-gradient(135deg, rgba(16,30,44,0.04) 0%, rgba(106,123,140,0.04) 100%);
+            border: 1px solid rgba(16,30,44,0.15);
             border-radius: var(--radius-lg); padding: 40px;
             display: flex; align-items: center; gap: 32px;
             margin-bottom: 48px;
         }
         .patent-icon {
             width: 64px; height: 64px; border-radius: 16px;
-            background: rgba(59,130,246,0.08);
+            background: rgba(16,30,44,0.08);
             display: flex; align-items: center; justify-content: center;
             font-size: 28px; flex-shrink: 0;
         }
