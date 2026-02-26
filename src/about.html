@@ -42,7 +42,8 @@ footer{background:var(--navy-deep);color:#fff;padding:64px 32px 40px}.footer-inn
 </head>
 <body>
 
-<nav id="nav"><div class="nav-inner"><a href="index.html" class="logo-link"><img src="logo.png" alt="HNTR AI" height="40" style="height:40px;width:auto"></a><button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></button><ul class="nav-links"><li><a href="product.html">Platform</a></li><li><a href="about.html" class="active">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="architecture.html">Architecture</a></li><li><a href="contact.html" class="nav-cta">Request Demo</a></li></ul></div></nav>
+<!-- HEADER -->
+
 <section class="page-hero">
 <div class="container">
 <h1>The recruiting problem<br><em>nobody solved</em></h1>
@@ -117,12 +118,8 @@ footer{background:var(--navy-deep);color:#fff;padding:64px 32px 40px}.footer-inn
 <div style="text-align:center" class="reveal"><a href="contact.html" class="btn-primary">Get in Touch &rarr;</a></div>
 </div></section>
 
-<footer><div class="footer-inner"><div class="footer-top">
-<div class="footer-brand"><img src="logo.png" alt="HNTR AI" class="footer-brand-logo" height="32" style="height:32px;width:auto"><p>Recruiting intelligence for wealth management. Identify, engage, and convert top financial advisors with AI-powered behavioral signals.</p></div>
-<div class="footer-col"><h4>Platform</h4><a href="product.html#signal">HNTR Signal&trade;</a><a href="product.html#watch">HNTR Watch&trade;</a><a href="product.html#fit">HNTR Fit&trade;</a><a href="product.html#blix">BLIX&trade; Index</a></div>
-<div class="footer-col"><h4>Company</h4><a href="about.html">About</a><a href="about.html#founder">Founder</a><a href="contact.html">Contact</a></div>
-<div class="footer-col"><h4>Legal</h4><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a><a href="#">Patent Notice</a></div>
-</div><div class="footer-bottom"><span>&copy; 2026 HNTR AI. All rights reserved.</span><div><a href="https://www.linkedin.com/in/paulcardenas" target="_blank">LinkedIn</a></div></div></div></footer>
+<!-- FOOTER -->
+
 <script>
 window.addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('scrolled',window.scrollY>20)});
 var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting)entry.target.classList.add('visible')})},{threshold:0.1,rootMargin:'0px 0px -60px 0px'});
